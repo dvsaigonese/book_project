@@ -16,7 +16,8 @@ use App\Http\Controllers\Frontend\DetailsController;
 use App\Http\Controllers\Frontend\WishlistController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\NewsController;
-use  App\Http\Controllers\Frontend\OrderFEController;
+use App\Http\Controllers\Frontend\OrderFEController;
+use App\Http\Controllers\Frontend\ReviewController;
 
 use App\Http\Controllers\Frontend\GHNController;
 
@@ -55,6 +56,10 @@ Route::get('/cart/quantity', [CartController::class, 'getQuantity'])->name('cart
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
 Route::delete('/wishlist/{book_id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+//Review Routes
+Route::get('/review/{book_slug}', [ReviewController::class, 'index'])->name('review');
+Route::post('/review/{book_slug}', [ReviewController::class, 'store'])->name('review.store');
 
 //Book Details Routes
 Route::get('/details/{book_slug}', [DetailsController::class, 'show'])->name('details');

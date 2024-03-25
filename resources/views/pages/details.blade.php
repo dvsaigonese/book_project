@@ -22,15 +22,14 @@
                 <!-- /page_header -->
                 <div class="prod_info">
                     <h1>{{ $book->name }}</h1>
-                    <span class="rating">
-                            <i class="icon-star voted"></i>
-                            <i class="icon-star voted"></i>
-                            <i class="icon-star voted"></i>
-                            <i class="icon-star voted"></i>
-                            <i class="icon-star"></i>
-                            <em>4 reviews</em></span>
-                    <p>
-                        <small>SKU: MTKRY-001</small><br>{{ $book->description }}</p>
+                    <span>
+                        @if($score == null)
+                            <p> This book has not received any reviews yet.</p>
+                        @else
+                            <p><small>Rating: {{ number_format($score, 2) }}/5<br>This book has {{ count($reviews) }} review(s).</small></p>
+                        @endif
+                    </span>
+                    <p><small>SKU: MTKRY-001</small><br>{{ $book->description }}</p>
                     <div class="box-tag">
                         <div class="row mb-2">
                             <div class="col">
@@ -111,37 +110,22 @@
         <!-- /row -->
     </div>
     <!-- /container -->
-
-    <div class="tabs_product">
-        <div class="container">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                    <a id="tab-A" href="#pane-A" class="nav-link active" data-bs-toggle="tab" role="tab">Description</a>
-                </li>
-                <li class="nav-item">
-                    <a id="tab-B" href="#pane-B" class="nav-link" data-bs-toggle="tab" role="tab">Reviews</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /tabs_product -->
     <div class="tab_content_wrapper">
         <div class="container">
             <div class="tab-content" role="tablist">
-                <div id="pane-A" class="card tab-pane fade active show" role="tabpanel" aria-labelledby="tab-A">
+                <div >
                     <div class="card-header" role="tab" id="heading-A">
                         <h5 class="mb-0">
-                            <a class="collapsed" data-bs-toggle="collapse" href="#collapse-A" aria-expanded="false"
+                            <a
                                aria-controls="collapse-A">
                                 Description
                             </a>
                         </h5>
                     </div>
-                    <div id="collapse-A" class="collapse" role="tabpanel" aria-labelledby="heading-A">
+                    <div>
                         <div class="card-body">
                             <div class="row justify-content-between">
                                 <div class="col">
-                                    <h3>Details</h3>
                                     {{ $book->description }}
                                 </div>
                             </div>
@@ -149,16 +133,16 @@
                     </div>
                 </div>
                 <!-- /TAB A -->
-                <div id="pane-B" class="card tab-pane fade" role="tabpanel" aria-labelledby="tab-B">
+                <div>
                     <div class="card-header" role="tab" id="heading-B">
                         <h5 class="mb-0">
-                            <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B" aria-expanded="false"
+                            <a
                                aria-controls="collapse-B">
                                 Reviews
                             </a>
                         </h5>
                     </div>
-                    <div id="collapse-B" class="collapse" role="tabpanel" aria-labelledby="heading-B">
+                    <div>
                         <div class="card-body">
                             <div class="row justify-content-between">
                                 @if($reviews[0]->score == null)
@@ -198,7 +182,7 @@
                                 @endif
                             </div>
                             <!-- /row -->
-                            <p class="text-end"><a href="leave-review.html" class="btn_1">Leave a review</a></p>
+                            <p class="text-end"><a href="{{ route('review', $book->slug) }}" class="btn_1">Leave a review</a></p>
                         </div>
                         <!-- /card-body -->
                     </div>
@@ -217,158 +201,44 @@
             <span>Products</span>
             <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
-        <div class="owl-carousel owl-theme products_carousel">
-            <div class="item">
-                <div class="grid_item">
-                    <span class="ribbon new">New</span>
-                    <figure>
-                        <a href="product-detail-1.html">
-                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg"
-                                 data-src="img/products/shoes/4.jpg" alt="">
+        <div class="owl-carousel owl-theme  products_carousel">
+            @foreach($related as $book)
+                <div class="item">
+                    <div class="grid_item">
+                        <span class="ribbon new">New</span>
+                        <figure>
+                            <a href="{{ route('details', $book->slug) }}">
+                                <img class="img-fluid lazy" src="{{ asset($book->image) }}" />
+                            </a>
+                        </figure>
+                        <a href="{{ route('details', $book->slug) }}">
+                            <h3>{{ $book->name }}</h3>
                         </a>
-                    </figure>
-                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                            class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-                    <a href="product-detail-1.html">
-                        <h3>ACG React Terra</h3>
-                    </a>
-                    <div class="price_box">
-                        <span class="new_price">$110.00</span>
+                        <div class="price_box">
+                            <span class="new_price">{{ $book->book_price }}</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <form action="{{ route('wishlist.store') }}" method="POST">
+                                    @csrf
+                                    <input name="book_id" value="{{ $book->id }}" class="d-none">
+                                    <button type="submit" class="btn btn-light"><i class="ti-heart"></i></button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ route('cart.store') }}" method="POST">
+                                    @csrf
+                                    <input type="text" value="1" id="quantity_1" class="d-none" name="quantity">
+                                    <input name="book_id" value="{{ $book->id }}" class="d-none">
+                                    <button type="submit" class="btn btn-light"><i class="ti-shopping-cart"></i></button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
-                    <ul>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a>
-                        </li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-                    </ul>
+                    <!-- /grid_item -->
                 </div>
-                <!-- /grid_item -->
-            </div>
-            <!-- /item -->
-            <div class="item">
-                <div class="grid_item">
-                    <span class="ribbon new">New</span>
-                    <figure>
-                        <a href="product-detail-1.html">
-                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg"
-                                 data-src="img/products/shoes/5.jpg" alt="">
-                        </a>
-                    </figure>
-                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                            class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-                    <a href="product-detail-1.html">
-                        <h3>Air Zoom Alpha</h3>
-                    </a>
-                    <div class="price_box">
-                        <span class="new_price">$140.00</span>
-                    </div>
-                    <ul>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a>
-                        </li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-                    </ul>
-                </div>
-                <!-- /grid_item -->
-            </div>
-            <!-- /item -->
-            <div class="item">
-                <div class="grid_item">
-                    <span class="ribbon hot">Hot</span>
-                    <figure>
-                        <a href="product-detail-1.html">
-                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg"
-                                 data-src="img/products/shoes/8.jpg" alt="">
-                        </a>
-                    </figure>
-                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                            class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-                    <a href="product-detail-1.html">
-                        <h3>Air Color 720</h3>
-                    </a>
-                    <div class="price_box">
-                        <span class="new_price">$120.00</span>
-                    </div>
-                    <ul>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a>
-                        </li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-                    </ul>
-                </div>
-                <!-- /grid_item -->
-            </div>
-            <!-- /item -->
-            <div class="item">
-                <div class="grid_item">
-                    <span class="ribbon off">-30%</span>
-                    <figure>
-                        <a href="product-detail-1.html">
-                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg"
-                                 data-src="img/products/shoes/2.jpg" alt="">
-                        </a>
-                    </figure>
-                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                            class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-                    <a href="product-detail-1.html">
-                        <h3>Okwahn II</h3>
-                    </a>
-                    <div class="price_box">
-                        <span class="new_price">$90.00</span>
-                        <span class="old_price">$170.00</span>
-                    </div>
-                    <ul>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a>
-                        </li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-                    </ul>
-                </div>
-                <!-- /grid_item -->
-            </div>
-            <!-- /item -->
-            <div class="item">
-                <div class="grid_item">
-                    <span class="ribbon off">-50%</span>
-                    <figure>
-                        <a href="product-detail-1.html">
-                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg"
-                                 data-src="img/products/shoes/3.jpg" alt="">
-                        </a>
-                    </figure>
-                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                            class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-                    <a href="product-detail-1.html">
-                        <h3>Air Wildwood ACG</h3>
-                    </a>
-                    <div class="price_box">
-                        <span class="new_price">$75.00</span>
-                        <span class="old_price">$155.00</span>
-                    </div>
-                    <ul>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a>
-                        </li>
-                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left"
-                               title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-                    </ul>
-                </div>
-                <!-- /grid_item -->
-            </div>
+            @endforeach
+
             <!-- /item -->
         </div>
         <!-- /products_carousel -->

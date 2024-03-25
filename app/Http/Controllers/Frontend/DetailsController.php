@@ -33,11 +33,24 @@ class  DetailsController extends Controller
             ->leftJoin('rating', 'books.id', '=', 'rating.book_id')
             ->select('rating.*')
             ->paginate(4);
+        $score = DB::table('books')
+            ->where('books.slug', $slug)
+            ->leftJoin('rating', 'books.id', '=', 'rating.book_id')
+            ->avg('rating.score');
+        $related = DB::table('books')
+            ->leftJoin('book_price', 'books.id', '=', 'book_price.book_id')
+            ->where('books.status', '=', 1)
+            ->where('book_price.status', '=', 1)
+            ->orderByRaw('RAND()')
+            ->take(4)
+            ->get();
         return view('pages.details',
             compact(
                 'book',
                 'genres',
                 'authors',
-                'reviews'));
+                'reviews',
+                'score',
+                'related'));
     }
 }
