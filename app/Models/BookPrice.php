@@ -35,16 +35,16 @@ class BookPrice extends Model
 		'status' => 'bool',
 		'end_at' => 'datetime',
 		'book_id' => 'int',
-		'create_at' => 'datetime',
-		'update_at' => 'datetime'
+		'created_at' => 'datetime',
+		'updated_at' => 'datetime'
 	];
 
 	protected $fillable = [
 		'book_price',
 		'status',
 		'end_at',
-		'create_at',
-		'update_at',
+		'created_at',
+		'updated_at',
         'book_id',
 	];
 

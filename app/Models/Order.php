@@ -33,8 +33,8 @@ class Order extends Model
 	protected $casts = [
 		'total_price' => 'int',
 		'users_id' => 'int',
-		'create_at' => 'datetime',
-		'update_at' => 'datetime'
+		'created_at' => 'datetime',
+		'updated_at' => 'datetime'
 	];
 
 	protected $fillable = [
@@ -47,8 +47,8 @@ class Order extends Model
         'order_address',
         'order_status',
         'payment_status',
-		'create_at',
-		'update_at'
+		'created_at',
+		'updated_at'
 	];
 
 	public function user()

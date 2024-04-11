@@ -6,7 +6,7 @@
     @isset($toast)
         <x-toast-message :status="$toast['status']" :message="$toast['message']"/>
     @endisset
-{{--    <a class="btn btn-danger float-end" href="{{ route('admin.book.create') }}"> <i class="ti-plus"></i> Create New</a>--}}
+    <a class="btn btn-danger float-end" href="{{ route('admin.news.create') }}"> <i class="ti-plus"></i> Create New</a>
     @livewire('news-table')
 @endsection
 

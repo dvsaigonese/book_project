@@ -22,7 +22,7 @@ class PositionSeeder extends Seeder
         ];
 
         foreach ($positions as $position) {
-            \App\Models\Position::create($position);
+            \App\Models\Role::create($position);
         }
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
@@ -23,7 +24,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon|null $create_at
  * @property Carbon|null $update_at
  *
- * @property Position $position
+ * @property Role $position
  * @property Collection|Order[] $bills
  * @property Collection|Cart[] $carts
  * @property Collection|Rating[] $ratings
@@ -34,12 +35,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory;
+    use HasRoles;
 	protected $table = 'users';
 
 	protected $casts = [
 		'position_id' => 'int',
-		'create_at' => 'datetime',
-		'update_at' => 'datetime'
+		'created_at' => 'datetime',
+		'updated_at' => 'datetime'
 	];
 
 	protected $hidden = [
@@ -50,19 +52,18 @@ class User extends Authenticatable
 		'name',
 		'email',
 		'password',
-        'phone',
 		'position_id',
         'status',
-		'create_at',
-		'update_at'
+		'created_at',
+		'updated_at'
 	];
 
-	public function position()
+	public function role()
 	{
-		return $this->belongsTo(Position::class);
+		return $this->belongsToMany(Role::class);
 	}
 
-	public function bills()
+	public function orders()
 	{
 		return $this->hasMany(Order::class, 'user_id');
 	}
@@ -72,12 +73,12 @@ class User extends Authenticatable
 		return $this->hasMany(Cart::class, 'user_id');
 	}
 
-	public function ratings()
+	public function rating()
 	{
 		return $this->hasMany(Rating::class, 'user_id');
 	}
 
-	public function wishlists()
+	public function wishlist()
 	{
 		return $this->hasMany(Wishlist::class, 'user_id');
 	}

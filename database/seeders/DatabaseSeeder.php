@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
         Author::factory(100)->create();
         $this->call([PositionSeeder::class]);
         User::factory(30)->create();
-        //Bill::factory(100)->create();
         Genre::factory(10)->create();
         Book::factory(100)->create()->each(function ($book) {
             BookPrice::create([

@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\NewsBEController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SatisticsController;
+use App\Http\Controllers\Backend\RoleController;
 
 use App\Http\Controllers\Frontend\AllBooksController;
 use App\Http\Controllers\Frontend\CartController;
@@ -70,7 +71,7 @@ Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 
 Route::middleware('auth')->group(function () {
     //Checkout Routes
-    Route::get('/checkout', [CheckoutController::class,'index'])->name('checkout');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
     //Payment Routes
     Route::post('/vnpay-payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
@@ -92,7 +93,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['admin'])->group(function (){
+Route::middleware(['admin'])->group(function () {
     Route::prefix('admin')->group(function () {
         //Dashboard Routes
         Route::get('/dashboard', function () {
@@ -100,68 +101,93 @@ Route::middleware(['admin'])->group(function (){
         })->name('admin.dashboard');
 
         //Order Routes
+
         Route::get('/order', [OrderController::class, 'index'])->name('admin.order.index');
         Route::put('/order/order_status/{id}', [OrderController::class, 'changeOrderStatus']);
         Route::put('/order/payment_status/{id}', [OrderController::class, 'changePaymentStatus']);
 
         //Book Routes
-        Route::get('/books', [BookController::class, 'index'])->name('admin.book.index');
-        Route::get('/books/create', [BookController::class, 'create'])->name('admin.book.create');
-        Route::post('/books', [BookController::class, 'store'])->name('admin.book.store');
-        Route::get('/books/{id}', [BookController::class, 'edit'])->name('admin.book.edit');
-        Route::put('/books/{id}', [BookController::class, 'update'])->name('admin.book.update');
-        Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('admin.book.destroy');
-        Route::get('books/{id}/add-author', [BookController::class, 'addAuthorView'])->name('admin.book.addAuthorView');
-        Route::post('books/{book}/add-author/{author}', [BookController::class, 'addBookAuthor'])->name('admin.book.addBookAuthor');
-        Route::delete('books/{book}/add-author/{author}', [BookController::class, 'deleteBookAuthor'])->name('admin.book.deleteBookAuthor');
-        Route::get('books/{id}/add-genre', [BookController::class, 'addGenreView'])->name('admin.book.addGenreView');
-        Route::post('books/{book}/add-genre/{genre}', [BookController::class, 'addBookGenre'])->name('admin.book.addBookGenre');
-        Route::delete('books/{book}/add-genre/{genre}', [BookController::class, 'deleteBookGenre'])->name('admin.book.deleteBookGenre');
+        Route::group(['middleware' => ['permission:create books|read books|update books|delete books']], function () {
+            Route::get('/books', [BookController::class, 'index'])->name('admin.book.index');
+            Route::get('/books/create', [BookController::class, 'create'])->name('admin.book.create');
+            Route::post('/books', [BookController::class, 'store'])->name('admin.book.store');
+            Route::get('/books/{id}', [BookController::class, 'edit'])->name('admin.book.edit');
+            Route::put('/books/{id}', [BookController::class, 'update'])->name('admin.book.update');
+            Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('admin.book.destroy');
+            Route::get('books/{id}/add-author', [BookController::class, 'addAuthorView'])->name('admin.book.addAuthorView');
+            Route::post('books/{book}/add-author/{author}', [BookController::class, 'addBookAuthor'])->name('admin.book.addBookAuthor');
+            Route::delete('books/{book}/add-author/{author}', [BookController::class, 'deleteBookAuthor'])->name('admin.book.deleteBookAuthor');
+            Route::get('books/{id}/add-genre', [BookController::class, 'addGenreView'])->name('admin.book.addGenreView');
+            Route::post('books/{book}/add-genre/{genre}', [BookController::class, 'addBookGenre'])->name('admin.book.addBookGenre');
+            Route::delete('books/{book}/add-genre/{genre}', [BookController::class, 'deleteBookGenre'])->name('admin.book.deleteBookGenre');
+        });
 
         //Author Routes
-        Route::get('/authors', [AuthorController::class, 'index'])->name('admin.author.index');
-        Route::get('/authors/create', [AuthorController::class, 'create'])->name('admin.author.create');
-        Route::post('/authors', [AuthorController::class, 'store'])->name('admin.author.store');
-        Route::get('/authors/{id}', [AuthorController::class, 'edit'])->name('admin.author.edit');
-        Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('admin.author.update');
-        Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('admin.author.destroy');
+        Route::group(['middleware' => ['permission:create authors|read authors|update authors|delete authors']], function () {
+            Route::get('/authors', [AuthorController::class, 'index'])->name('admin.author.index');
+            Route::get('/authors/create', [AuthorController::class, 'create'])->name('admin.author.create');
+            Route::post('/authors', [AuthorController::class, 'store'])->name('admin.author.store');
+            Route::get('/authors/{id}', [AuthorController::class, 'edit'])->name('admin.author.edit');
+            Route::put('/authors/{id}', [AuthorController::class, 'update'])->name('admin.author.update');
+            Route::delete('/authors/{id}', [AuthorController::class, 'destroy'])->name('admin.author.destroy');
+        });
 
         //Genre Routes
-        Route::get('/genres', [GenreController::class, 'index'])->name('admin.genre.index');
-        Route::get('/genres/create', [GenreController::class, 'create'])->name('admin.genre.create');
-        Route::post('/genres', [GenreController::class, 'store'])->name('admin.genre.store');
-        Route::get('/genres/{id}', [GenreController::class, 'edit'])->name('admin.genre.edit');
-        Route::put('/genres/{id}', [GenreController::class, 'update'])->name('admin.genre.update');
-        Route::delete('/genres/{id}', [GenreController::class, 'destroy'])->name('admin.genre.destroy');
+        Route::group(['middleware' => ['permission:create genres|read genres|update genres|delete genres']], function () {
+            Route::get('/genres', [GenreController::class, 'index'])->name('admin.genre.index');
+            Route::get('/genres/create', [GenreController::class, 'create'])->name('admin.genre.create');
+            Route::post('/genres', [GenreController::class, 'store'])->name('admin.genre.store');
+            Route::get('/genres/{id}', [GenreController::class, 'edit'])->name('admin.genre.edit');
+            Route::put('/genres/{id}', [GenreController::class, 'update'])->name('admin.genre.update');
+            Route::delete('/genres/{id}', [GenreController::class, 'destroy'])->name('admin.genre.destroy');
+        });
 
         //User Routes
-        Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
-        Route::get('/users/create', [UserController::class, 'create'])->name('admin.user.create');
-        Route::post('/users', [UserController::class, 'store'])->name('admin.user.store');
-        Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
-        Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.user.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
+        Route::group(['middleware' => ['permission:create users|read users|update users|delete users']], function () {
+            Route::get('/users', [UserController::class, 'index'])->name('admin.user.index');
+            Route::get('/users/create', [UserController::class, 'create'])->name('admin.user.create');
+            Route::post('/users', [UserController::class, 'store'])->name('admin.user.store');
+            Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.user.edit');
+            Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.user.update');
+            Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.user.destroy');
+        });
 
         //News Routes
-        Route::get('/news', [NewsBEController::class, 'index'])->name('admin.news.index');
-        Route::get('/news/create', [NewsBEController::class, 'create'])->name('admin.news.create');
-        Route::post('/news', [NewsBEController::class, 'store'])->name('admin.news.store');
-        Route::get('/news/{id}', [NewsBEController::class, 'edit'])->name('admin.news.edit');
-        Route::put('/news/{id}', [NewsBEController::class, 'update'])->name('admin.news.update');
-        Route::delete('/news/{id}', [NewsBEController::class, 'destroy'])->name('admin.news.destroy');
+        Route::group(['middleware' => ['permission:create news|read news|update news|delete news']], function () {
+            Route::get('/news', [NewsBEController::class, 'index'])->name('admin.news.index');
+            Route::get('/news/create', [NewsBEController::class, 'create'])->name('admin.news.create');
+            Route::post('/news', [NewsBEController::class, 'store'])->name('admin.news.store');
+            Route::get('/news/{id}', [NewsBEController::class, 'edit'])->name('admin.news.edit');
+            Route::put('/news/{id}', [NewsBEController::class, 'update'])->name('admin.news.update');
+            Route::delete('/news/{id}', [NewsBEController::class, 'destroy'])->name('admin.news.destroy');
+        });
 
         //Slider Routes
-        Route::get('/sliders', [SliderController::class, 'index'])->name('admin.slider.index');
-        Route::get('/sliders/create', [SliderController::class, 'create'])->name('admin.slider.create');
-        Route::post('/sliders', [SliderController::class, 'store'])->name('admin.slider.store');
-        Route::get('/sliders/{id}', [SliderController::class, 'edit'])->name('admin.slider.edit');
-        Route::put('/sliders/{id}', [SliderController::class, 'update'])->name('admin.slider.update');
-        Route::put('/sliders/status/{id}', [SliderController::class, 'statusUpdate'])->name('admin.slider.status_update');
-        Route::delete('/sliders/{id}', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
+        Route::group(['middleware' => ['permission:create sliders|read sliders|update sliders|delete sliders']], function () {
+            Route::get('/sliders', [SliderController::class, 'index'])->name('admin.slider.index');
+            Route::get('/sliders/create', [SliderController::class, 'create'])->name('admin.slider.create');
+            Route::post('/sliders', [SliderController::class, 'store'])->name('admin.slider.store');
+            Route::get('/sliders/{id}', [SliderController::class, 'edit'])->name('admin.slider.edit');
+            Route::put('/sliders/{id}', [SliderController::class, 'update'])->name('admin.slider.update');
+            Route::put('/sliders/status/{id}', [SliderController::class, 'statusUpdate'])->name('admin.slider.status_update');
+            Route::delete('/sliders/{id}', [SliderController::class, 'destroy'])->name('admin.slider.destroy');
+        });
 
-        Route::get('/satistics', [SatisticsController::class, 'index'])->name('admin.satistics.index');
-        Route::get('/satistics/{option}', [SatisticsController::class, 'revenueStatistics'])->name('admin.satistics.revenueSatistics');
-        Route::get('/satistics-time/{option}', [SatisticsController::class, 'timeStatistics'])->name('admin.satistics.timeSatistics');
+        //Roles Routes
+        Route::group(['middleware' => ['permission:create roles|read roles|update roles|delete roles']], function () {
+            Route::get('/roles', [RoleController::class, 'index'])->name('admin.role.index');
+            Route::get('/roles/create', [RoleController::class, 'create'])->name('admin.role.create');
+            Route::post('/roles', [RoleController::class, 'store'])->name('admin.role.store');
+            Route::get('/roles/{id}', [RoleController::class, 'edit'])->name('admin.role.edit');
+            Route::put('/roles/{id}', [RoleController::class, 'update'])->name('admin.role.update');
+            Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('admin.role.destroy');
+        });
+
+        Route::group(['middleware' => ['permission:read statistics']], function () {
+            Route::get('/satistics', [SatisticsController::class, 'index'])->name('admin.satistics.index');
+            Route::get('/satistics/{option}', [SatisticsController::class, 'revenueStatistics'])->name('admin.satistics.revenueSatistics');
+            Route::get('/satistics-time/{option}', [SatisticsController::class, 'timeStatistics'])->name('admin.satistics.timeSatistics');
+        });
     });
 });
 
@@ -174,6 +200,5 @@ Route::middleware('auth')->group(function () {
 Route::post('ckeditor/upload', [NewsBEController::class, 'upload'])->name('ckeditor.upload');
 
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 

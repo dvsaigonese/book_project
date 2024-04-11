@@ -20,8 +20,8 @@ class News extends Model
     protected $table = 'news';
 
     protected $casts = [
-        'create_at' => 'datetime',
-        'update_at' => 'datetime'
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
     ];
 
     protected $fillable = [
@@ -30,8 +30,8 @@ class News extends Model
         'image',
         'author',
         'status',
-        'create_at',
-        'update_at'
+        'created_at',
+        'updated_at'
     ];
 
     public function sluggable(): array

@@ -59,6 +59,7 @@
     <a href="{{route('admin.author.index')}}"><i class="ti-marker-alt"></i> Authors</a>
     <a href="{{route('admin.genre.index')}}"><i class="ti-tag"></i> Genres</a>
     <a href="{{route('admin.user.index')}}"><i class="ti-user"></i> Users</a>
+    <a href="{{route('admin.role.index')}}"><i class="ti-notepad"></i> Roles</a>
     <a href="{{route('admin.slider.index')}}"><i class="ti-hand-drag"></i> Sliders</a>
     <a href="{{route('admin.satistics.index')}}"><i class="ti-stats-up"></i> Satistics</a>
     <a href="#">Contact</a>

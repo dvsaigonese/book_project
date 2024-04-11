@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Position;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -22,11 +22,8 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->numerify('##########'),
             'password' => Hash::make(123456), // password
-            'position_id' => function () {
-                return Position::all()->random()->id;
-            },
+            'position_id' => 1,
             'status' => 1,
         ];
     }

@@ -1,12 +1,11 @@
 @extends('admin.app')
 
-@section('title', 'Admin Edit Book')
+@section('title', 'Admin Edit User')
 
 @section('content')
-
     <form class="m-5" action="{{ route('admin.user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
         @method('PUT')
+        @csrf
         <div class="form-row">
             <div class="mb-3">
                 <label for="user-id">Book ID</label>
@@ -24,25 +23,38 @@
                        value="{{ $user->email }}" required>
             </div>
             <div class="mb-3">
-                <label for="user-phone">Phone</label>
-                <input name="phone" type="text" class="form-control" id="user-phone"
-                       placeholder="Phone"
-                       value="{{ $user->phone }}" required>
-            </div>
-            <div class="mb-3">
                 <label for="user-status">Status</label>
                 <select id="user-status" class="form-control form-select" name="status">
                     <option {{$user->status == 1 ? 'selected' : ''}} value="1">On</option>
                     <option {{$user->status == 0 ? 'selected' : ''}} value="0">Off</option>
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="user-position">Position</label>
-                <select id="user-position" class="form-control" name="position">
-                    @foreach($positions as $position)
-                        <option value="{{ $position->id }}" {{ $position->id == $user->position_id ? 'selected': "" }} >{{ $position->name }}</option>
+            <label>Roles</label>
+            <div id="roles-grid" class="mb-3">
+
+                @foreach($roles as $role)
+                    @php
+                        $has = false;
+                    @endphp
+                    @foreach($user_has_roles as $item)
+                        @if($role->id == $item->role_id)
+                            @php
+                                $has = true;
+                            @endphp
+                        @endif
                     @endforeach
-                </select>
+                    @if($has)
+                        <label>
+                            <input name="roles[]" type="checkbox" value="{{ $role->id }}" checked/>
+                            {{ $role->name }}
+                        </label>
+                    @else
+                        <label>
+                            <input name="roles[]" type="checkbox" value="{{ $role->id }}"/>
+                            {{ $role->name }}
+                        </label>
+                    @endif
+                @endforeach
             </div>
             <div class="mb-3">
                 <label for="user-time">Registration time</label>
@@ -56,17 +68,18 @@
             <div class="btn btn-danger" id="delete-btn">Delete User</div>
         </div>
     </form>
-    @php
-        $destroy_url =  route('admin.user.destroy', $user->id);
-    @endphp
-    <x-confirm-modal status="Delete" method="DELETE" class="confirm-modal hidden" :url="$destroy_url"/>
 
+    @php
+        $destroyUrl = route('admin.user.destroy', $user->id);
+    @endphp
+
+    <x-confirm-modal status="Delete" method="DELETE" class="confirm-modal hidden" :url="$destroyUrl"/>
 
     @if(session('error'))
         @php
             $message = session('error');
         @endphp
-        <x-toast-message status="error" :message="$message" />
+        <x-toast-message status="error" :message="$message"/>
     @endif
 @endsection
 
@@ -75,6 +88,16 @@
         const deleteBtn = document.getElementById('delete-btn');
         deleteBtn.addEventListener('click', () => {
             openModal();
-        })
+        });
     </script>
+@endsection
+
+@section('styles')
+    <style>
+        #roles-grid {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    </style>
 @endsection

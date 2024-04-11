@@ -42,8 +42,8 @@ class Wishlist extends Model
 	protected $fillable = [
 		'book_id',
 		'user_id',
-		'create_at',
-		'update_at'
+		'created_at',
+		'updated_at'
 	];
 
 	public function book()
@@ -53,6 +53,6 @@ class Wishlist extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'users_id');
+		return $this->belongsTo(User::class, 'user_id');
 	}
 }

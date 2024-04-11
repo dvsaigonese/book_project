@@ -37,8 +37,8 @@ class Cart extends Model
 		'book_id' => 'int',
 		'quantity' => 'int',
 		'price' => 'int',
-		'create_at' => 'datetime',
-		'update_at' => 'datetime'
+		'created_at' => 'datetime',
+		'updated_at' => 'datetime'
 	];
 
 	protected $fillable = [

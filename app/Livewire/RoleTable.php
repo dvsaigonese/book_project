@@ -2,25 +2,22 @@
 
 namespace App\Livewire;
 
-use App\Models\Role;
-use App\Models\User;
-use Illuminate\Support\Carbon;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\Facades\Filter;
+use PowerComponents\LivewirePowerGrid\Facades\Rule;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridColumns;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
-use PowerComponents\LivewirePowerGrid\Traits\WithExport;
 
-final class UserTable extends PowerGridComponent
+final class RoleTable extends PowerGridComponent
 {
-    use WithExport;
-
     public function setUp(): array
     {
         $this->showCheckBox();
@@ -38,41 +35,34 @@ final class UserTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return User::query();
+        return Role::query();
     }
 
-    public function relationSearch(): array
+    public function fields(): PowerGridFields
     {
-        return [
-        ];
-    }
-
-    public function addColumns(): PowerGridColumns
-    {
-        return PowerGrid::columns()
-            ->addColumn('id')
-            ->addColumn('name')
-            ->addColumn('email')
-            ->addColumn('created_at');
+        return PowerGrid::fields()
+            ->add('id')
+            ->add('name')
+            ->add('name_lower', fn(Role $model) => strtolower(e($model->name)))
+            ->add('created_at')
+            ->add('created_at_formatted', fn(Role $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     public function columns(): array
     {
         return [
-            Column::make('Id', 'id')
-                ->sortable()
-                ->searchable(),
+            Column::make('ID', 'id')
+                ->searchable()
+                ->sortable(),
 
             Column::make('Name', 'name')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Email', 'email')
-                ->sortable()
-                ->searchable(),
+                ->searchable()
+                ->sortable(),
 
             Column::make('Created at', 'created_at')
-                ->sortable()
+                ->hidden(),
+
+            Column::make('Created at', 'created_at_formatted', 'created_at')
                 ->searchable(),
 
             Column::action('Action')
@@ -82,9 +72,8 @@ final class UserTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('name')->operators(['contains']),
-            Filter::inputText('email')->operators(['contains']),
-            Filter::inputText('phone')->operators(['contains']),
+            Filter::inputText('name'),
+            Filter::datepicker('created_at_formatted', 'created_at'),
         ];
     }
 
@@ -94,18 +83,19 @@ final class UserTable extends PowerGridComponent
         $this->js('alert(' . $rowId . ')');
     }
 
-    public function actions(\App\Models\User $row): array
+    public function actions(Role $row): array
     {
         return [
             Button::add('edit')
                 ->slot('')
                 ->class('ti-settings btn btn-outline-primary')
-                ->route('admin.user.edit', ['id' => $row->id]),
+                ->route('admin.role.edit', ['id' => $row->id]),
         ];
+
     }
 
     /*
-    public function actionRules($row): array
+    public function actionRules(Role $row): array
     {
        return [
             // Hide button edit for ID 1
