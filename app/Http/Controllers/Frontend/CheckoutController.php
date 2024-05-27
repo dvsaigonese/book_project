@@ -22,12 +22,18 @@ class CheckoutController extends Controller
             $carts = Cart::where('user_id', Auth::id())
                 ->leftJoin('books', 'carts.book_id', '=', 'books.id')
                 ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
+                ->where('book_price.status', 1)
                 ->select('carts.*',
                     'books.image as image',
                     'books.name as name',
                     'books.slug as slug',
                     'book_price.book_price as book_price')
                 ->get();
+
+            if (!isset($carts[0]->name)) {
+                return redirect()->route('books')->with('warning', 'You must add a book to your cart before checkout!');
+            }
+
             $weight = Cart::where('user_id', Auth::id())
                 ->leftJoin('books', 'carts.book_id', '=', 'books.id')
                 ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
@@ -90,11 +96,21 @@ class CheckoutController extends Controller
 
     public function storeOrder(Request $request)
     {
+        if ($request->has('coupon_id')){
+            $data = [
+                'user_id' => Auth::id(),
+                'coupon_id' => $request->coupon_id,
+            ];
+
+            DB::table('user_has_coupons')->insert($data);
+        }
+
         $request = $request->merge([
             'user_id' => Auth::id(),
             'order_status' => 0,
             'payment_status' => 0
         ]);
+        //dd($request->all());
 
         return Order::create($request->all());
     }

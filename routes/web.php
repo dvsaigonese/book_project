@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\NewsBEController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SatisticsController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\CouponController;
 
 use App\Http\Controllers\Frontend\AllBooksController;
 use App\Http\Controllers\Frontend\CartController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\OrderFEController;
 use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\CouponFEController;
 
 use App\Http\Controllers\Frontend\GHNController;
 
@@ -72,6 +74,10 @@ Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
 Route::middleware('auth')->group(function () {
     //Checkout Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+    //Coupon Routes
+    Route::post('/coupons', [CouponFEController::class, 'addCoupon'])->name('coupon.add');
+    Route::get('/coupons/remove', [CouponFEController::class, 'removeCoupon'])->name('coupon.remove');
 
     //Payment Routes
     Route::post('/vnpay-payment', [CheckoutController::class, 'vnpay_payment'])->name('vnpay_payment');
@@ -181,6 +187,16 @@ Route::middleware(['admin'])->group(function () {
             Route::get('/roles/{id}', [RoleController::class, 'edit'])->name('admin.role.edit');
             Route::put('/roles/{id}', [RoleController::class, 'update'])->name('admin.role.update');
             Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->name('admin.role.destroy');
+        });
+
+        //Coupon Routes
+        Route::group(['middleware' => ['permission:create roles|read roles|update roles|delete roles']], function () {
+            Route::get('/coupons', [CouponController::class, 'index'])->name('admin.coupon.index');
+            Route::get('/coupons/create', [CouponController::class, 'create'])->name('admin.coupon.create');
+            Route::post('/coupons', [CouponController::class, 'store'])->name('admin.coupon.store');
+            Route::get('/coupons/{id}', [CouponController::class, 'edit'])->name('admin.coupon.edit');
+            Route::put('/coupons/{id}', [CouponController::class, 'update'])->name('admin.coupon.update');
+            Route::delete('/coupons/{id}', [CouponController::class, 'destroy'])->name('admin.coupon.destroy');
         });
 
         Route::group(['middleware' => ['permission:read statistics']], function () {

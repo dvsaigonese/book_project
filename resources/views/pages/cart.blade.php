@@ -80,11 +80,13 @@
                         </td>
                     </form>
                     <td class="options">
-                        <button class="btn btn-outline-danger" formaction="{{ route('cart.destroy', $cart->book_id) }}"
-                                method="POST">
+                        <form action="{{ route('cart.destroy', $cart->book_id) }}" method="POST">
                             @method('DELETE')
-                            @csrf<i class="ti-trash"></i>
-                        </button>
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="ti-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

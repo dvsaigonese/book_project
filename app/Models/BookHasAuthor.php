@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class BookHasAuthor extends Model
 {
     use HasFactory;
-	protected $table = 'book_has_author';
+	protected $table = 'book_has_authors';
 	public $incrementing = false;
 	public $timestamps = false;
 

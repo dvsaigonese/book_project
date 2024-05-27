@@ -16,13 +16,13 @@ class CartController extends Controller
             $carts = Cart::where('user_id', Auth::id())
                 ->leftJoin('books', 'carts.book_id', '=', 'books.id')
                 ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
+                ->where('book_price.status', '=', 1)
                 ->select('carts.*',
                     'books.image as image',
                     'books.name as name',
                     'books.slug as slug',
                     'book_price.book_price as book_price')
                 ->paginate(10);
-            //dd($carts);
             return view('pages.cart', compact('carts'));
         } else {
             return redirect()->route('account')->with('warning', 'If you want to access your cart, you must login first!');
@@ -35,7 +35,11 @@ class CartController extends Controller
             return redirect()->back()->with('warning', 'If you want to add something to cart, you must login first!');
         } else {
             $request->merge(['user_id' => Auth::id()]);
+            $price = $request->get('book_price') * $request->get('quantity');
+            $request->merge(['price' => $price]);
+
             $data = $request->all();
+            //dd($request->all(), $data);
             try {
                 Cart::create($data);
                 return redirect()->back()->with('success', 'Added to cart successfully!');

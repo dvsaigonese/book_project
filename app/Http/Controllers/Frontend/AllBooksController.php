@@ -35,8 +35,8 @@ class AllBooksController extends Controller
         }
         $genres = Genre::all();
         $q = Book::query();
-        $q->leftJoin('book_has_genre', 'book_has_genre.book_id', '=', 'books.id')
-            ->leftJoin('genres', 'genres.id', '=', 'book_has_genre.genre_id')
+        $q->leftJoin('book_has_genres', 'book_has_genres.book_id', '=', 'books.id')
+            ->leftJoin('genres', 'genres.id', '=', 'book_has_genres.genre_id')
             ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
             ->where('books.name', 'like', '%' . $que . '%')
             ->where('books.status', '=', 1)
@@ -60,8 +60,8 @@ class AllBooksController extends Controller
     {
         $genres = Genre::all();
         $q = Book::query();
-        $q->leftJoin('book_has_genre', 'book_has_genre.book_id', '=', 'books.id')
-            ->leftJoin('genres', 'genres.id', '=', 'book_has_genre.genre_id')
+        $q->leftJoin('book_has_genres', 'book_has_genres.book_id', '=', 'books.id')
+            ->leftJoin('genres', 'genres.id', '=', 'book_has_genres.genre_id')
             ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
             ->where('genres.slug', '=', $genre_slug)
             ->where('books.status', '=', 1)
@@ -84,8 +84,8 @@ class AllBooksController extends Controller
     {
         $genres = Genre::all();
         $q = Book::query();
-        $q->leftJoin('book_has_author', 'book_has_author.book_id', '=', 'books.id')
-            ->leftJoin('authors', 'authors.id', '=', 'book_has_author.author_id')
+        $q->leftJoin('book_has_authors', 'book_has_authors.book_id', '=', 'books.id')
+            ->leftJoin('authors', 'authors.id', '=', 'book_has_authors.author_id')
             ->leftJoin('book_price', 'book_price.book_id', '=', 'books.id')
             ->where('authors.slug', '=', $author_slug)
             ->where('books.status', '=', 1)

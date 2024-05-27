@@ -18,14 +18,14 @@ class  DetailsController extends Controller
             ->first();
         $genres = DB::table('books')
             ->where('books.slug', $slug)
-            ->leftJoin('book_has_genre', 'books.id', '=', 'book_has_genre.book_id')
-            ->leftJoin('genres', 'genres.id', '=', 'book_has_genre.genre_id')
+            ->leftJoin('book_has_genres', 'books.id', '=', 'book_has_genres.book_id')
+            ->leftJoin('genres', 'genres.id', '=', 'book_has_genres.genre_id')
             ->select('genres.*')
             ->get();
         $authors = DB::table('books')
             ->where('books.slug', $slug)
-            ->leftJoin('book_has_author', 'books.id', '=', 'book_has_author.book_id')
-            ->leftJoin('authors', 'authors.id', '=', 'book_has_author.author_id')
+            ->leftJoin('book_has_authors', 'books.id', '=', 'book_has_authors.book_id')
+            ->leftJoin('authors', 'authors.id', '=', 'book_has_authors.author_id')
             ->select('authors.*')
             ->get();
         $reviews = DB::table('books')

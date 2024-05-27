@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class BookHasGenre extends Model
 {
     use HasFactory;
-	protected $table = 'book_has_genre';
+	protected $table = 'book_has_genres';
 	public $incrementing = false;
 	public $timestamps = false;
 

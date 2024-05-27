@@ -39,7 +39,6 @@ class User extends Authenticatable
 	protected $table = 'users';
 
 	protected $casts = [
-		'position_id' => 'int',
 		'created_at' => 'datetime',
 		'updated_at' => 'datetime'
 	];
@@ -52,7 +51,6 @@ class User extends Authenticatable
 		'name',
 		'email',
 		'password',
-		'position_id',
         'status',
 		'created_at',
 		'updated_at'

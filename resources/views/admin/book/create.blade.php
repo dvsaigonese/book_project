@@ -76,6 +76,11 @@
                        required>
             </div>
             <div class="mb-3">
+                <label for="book-quantity">Price</label>
+                <input name="book_price" type="number" class="form-control" id="book-price" placeholder="Price"
+                       required>
+            </div>
+            <div class="mb-3">
                 <label for="book-status">Status</label>
                 <select id="book-status" class="form-control form-select" name="status">
                     <option value="1" selected>On</option>

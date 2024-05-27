@@ -122,6 +122,7 @@
                                                 @csrf
                                                 <input value="1" id="quantity_1" class="d-none" name="quantity">
                                                 <input name="book_id" value="{{ $book->id }}" class="d-none">
+                                                <input name="book_price" value="{{ $book->book_price }}" class="d-none">
                                                 <button type="submit" class="btn btn-light"><i class="ti-shopping-cart"></i></button>
                                             </form>
                                         </li>

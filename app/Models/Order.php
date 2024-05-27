@@ -42,6 +42,7 @@ class Order extends Model
         'shipping_fee',
         'subtotal_price',
 		'user_id',
+        'discount',
         'order_name',
         'order_phone',
         'order_address',

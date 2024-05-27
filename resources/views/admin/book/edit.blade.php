@@ -91,6 +91,11 @@
                        value="{{ $book->quantity }}" required>
             </div>
             <div class="mb-3">
+                <label for="book-quantity">Price</label>
+                <input name="book_price" type="number" class="form-control" id="book-price" placeholder="Price"
+                       value="{{ $book_price[0]->book_price }}" required>
+            </div>
+            <div class="mb-3">
                 <label for="book-status">Status</label>
                 <select id="book-status" class="form-control form-select" name="status">
                     <option {{$book->status == 1 ? 'selected' : ''}} value="1">On</option>

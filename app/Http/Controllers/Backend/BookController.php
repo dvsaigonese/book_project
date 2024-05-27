@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookHasAuthor;
 use App\Models\BookHasGenre;
+use App\Models\BookPrice;
 use App\Models\Genre;
 use App\Traits\CrudModel;
 
@@ -40,19 +41,22 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
         $author = BookHasAuthor::where('book_id', $id)
-            ->leftJoin('authors', 'authors.id', '=', 'book_has_author.author_id')
+            ->leftJoin('authors', 'authors.id', '=', 'book_has_authors.author_id')
             ->get();
         $genre = BookHasGenre::where('book_id', $id)
-            ->leftJoin('genres', 'genres.id', '=', 'book_has_genre.genre_id')
+            ->leftJoin('genres', 'genres.id', '=', 'book_has_genres.genre_id')
             ->get();
-        return view('admin.book.edit', compact('book', 'author', 'genre'));
+        $book_price = BookPrice::where('book_id', $id)
+            ->where('status', '1')
+            ->get();
+        return view('admin.book.edit', compact('book', 'author', 'genre', 'book_price'));
     }
 
     public function addAuthorView($id){
         $book = Book::findOrFail($id);
         $author = Author::all();
         $book_has_author = BookHasAuthor::where('book_id', $id)
-            ->leftJoin('authors', 'authors.id', '=', 'book_has_author.author_id');
+            ->leftJoin('authors', 'authors.id', '=', 'book_has_authors.author_id');
         return view('admin.book.addAuthor', compact('author', 'book_has_author', 'book'));
     }
 
@@ -74,7 +78,7 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $genre = Genre::all();
         $book_has_genre = BookHasGenre::where('book_id', $id)
-            ->leftJoin('genres', 'genres.id', '=', 'book_has_genre.genre_id');
+            ->leftJoin('genres', 'genres.id', '=', 'book_has_genres.genre_id');
         return view('admin.book.addGenre', compact('genre', 'book_has_genre', 'book'));
     }
 

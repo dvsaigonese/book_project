@@ -77,6 +77,7 @@
                                     <form action="{{ route('cart.store') }}" method="POST">
                                         @csrf
                                         <input type="text" value="1" id="quantity_1" class="d-none" name="quantity">
+                                        <input type="text" value="{{ $book->book_price }}" id="quantity_1" class="d-none" name="price">
                                         <input name="book_id" value="{{ $book->id }}" class="d-none">
                                         <button type="submit" class="btn btn-light"><i class="ti-shopping-cart"></i></button>
                                     </form>

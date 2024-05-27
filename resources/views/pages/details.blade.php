@@ -89,6 +89,7 @@
                             </div>
                         </div>
                         <input name="book_id" value="{{ $book->id }}" class="d-none">
+                        <input name="book_price" value="{{ $book->book_price }}" class="d-none">
                     </form>
                 </div>
                 <!-- /prod_info -->

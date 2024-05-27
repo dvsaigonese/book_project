@@ -1,376 +1,1010 @@
--- MySQL Workbench Forward Engineering
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Máy chủ: localhost:3306
+-- Thời gian đã tạo: Th5 27, 2024 lúc 08:53 AM
+-- Phiên bản máy phục vụ: 8.0.30
+-- Phiên bản PHP: 8.1.10
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema borrow_book_pj
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema borrow_book_pj
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `borrow_book_pj` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `borrow_book_pj` ;
-
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`authors`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`authors` ;
-
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`authors` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
-  `description` MEDIUMTEXT NULL DEFAULT NULL,
-  `status` INT NULL,
-  `slug` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`position`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`positions` ;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`positions` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Cơ sở dữ liệu: `borrow_book_pj`
+--
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`users`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`users` ;
+--
+-- Cấu trúc bảng cho bảng `authors`
+--
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `password` VARCHAR(300) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci' NOT NULL,
-  `position_id` INT NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `position_id` (`position_id` ASC) VISIBLE,
-  CONSTRAINT `users_ibfk_1`
-    FOREIGN KEY (`position_id`)
-    REFERENCES `borrow_book_pj`.`position` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `authors` (
+  `id` int NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` mediumtext,
+  `status` int DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `authors`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`orders`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`orders` ;
+INSERT INTO `authors` (`id`, `name`, `description`, `status`, `slug`) VALUES
+(1, 'Freda Kulas DDS', 'Explicabo aut dolore cum nostrum rerum. Consequatur ducimus voluptas aut iste et labore. Quis numquam ex deserunt nostrum.', 1, 'freda-kulas-dds'),
+(2, 'Yessenia Kuhic', 'Voluptatibus suscipit ipsum et a. Quisquam maiores blanditiis labore saepe ut culpa assumenda. Deleniti qui animi sint sequi. Quasi dolorem perferendis magnam rerum inventore a.', 1, 'yessenia-kuhic'),
+(3, 'Rosemary Hauck', 'Quod est numquam aliquid accusantium quidem commodi. Voluptatibus impedit et iste sit earum voluptatem et. Iusto illum impedit omnis deserunt. Eius sit eligendi vel ab ipsum perferendis optio dicta.', 1, 'rosemary-hauck'),
+(4, 'Mr. Abner Windler MD', 'Repudiandae illo voluptatibus aut rerum unde repellendus. Ipsum eveniet architecto ut sed sit.', 1, 'mr-abner-windler-md'),
+(5, 'Korbin Emard', 'Accusantium necessitatibus natus sunt aut quibusdam unde ipsa animi. Deserunt vel pariatur porro doloremque incidunt aut. Eos hic qui veniam culpa. Dolorum est ut nostrum et. Praesentium et est rerum quod fugiat aut quaerat.', 1, 'korbin-emard'),
+(6, 'Mason Vandervort', 'Aliquid voluptatibus sit provident perferendis. Cumque dignissimos enim deserunt tenetur praesentium repudiandae quos illum. Delectus et sit dolores.', 1, 'mason-vandervort'),
+(7, 'Golda Volkman', 'Expedita sed sed dignissimos doloribus laboriosam. Ut amet voluptates architecto blanditiis. Ipsum similique nulla magnam veritatis. Eius illum assumenda suscipit et facilis illum. Deserunt occaecati magni veniam cum corporis sed.', 1, 'golda-volkman'),
+(8, 'Dr. Tomasa Okuneva', 'Optio consequuntur et fuga ipsum molestiae laudantium. Omnis est voluptatibus et nam quis beatae id. Perspiciatis doloremque mollitia voluptatem dolorem similique doloribus.', 1, 'dr-tomasa-okuneva'),
+(9, 'Ms. Verna Bahringer DVM', 'Aperiam mollitia perspiciatis voluptatem vel. Explicabo quo rem porro odit tempore atque ex. Sint iste consectetur officia ut. Ea minus voluptatem natus vero ut. Animi numquam ex ea eos eum voluptatibus.', 1, 'ms-verna-bahringer-dvm'),
+(10, 'Boyd Oberbrunner', 'Quidem molestiae et deserunt. Tenetur quam necessitatibus repellat alias.', 1, 'boyd-oberbrunner'),
+(11, 'Elton Homenick', 'Sunt perferendis sequi saepe asperiores maiores. Sint reprehenderit dolorem recusandae distinctio. Autem ut quisquam est et et.', 1, 'elton-homenick'),
+(12, 'Blair Parisian V', 'Tempora quod sint natus qui rerum tenetur laborum. Voluptas quidem exercitationem quia qui recusandae accusantium. Odio ut illo consectetur illo. Sunt rerum eos omnis.', 1, 'blair-parisian-v'),
+(13, 'Prof. Amaya O\'Hara', 'Consequatur non qui sit ut tempore ut placeat. Sed eligendi voluptatem a nam ut repudiandae. Rerum magni dicta accusamus sunt consequatur illum.', 1, 'prof-amaya-o-hara'),
+(14, 'Palma Durgan', 'Aliquid et sed occaecati doloremque earum. Nisi qui cumque iste optio consectetur voluptatem excepturi explicabo. Ea praesentium vero nobis assumenda labore nesciunt.', 1, 'palma-durgan'),
+(15, 'Bud Medhurst', 'Dolorem earum et magni id deleniti nisi consequuntur voluptatem. Velit tempora et fugit rerum magni quis voluptatem. Consequatur qui cupiditate minima delectus natus facere. Consequatur itaque at ut quibusdam voluptatem quia.', 1, 'bud-medhurst'),
+(16, 'Ms. Georgiana Jacobi', 'Est aspernatur dolorem nisi id. Amet debitis harum aspernatur quo provident iusto ea vero. Pariatur quo vero sint provident.', 1, 'ms-georgiana-jacobi'),
+(17, 'Dr. Ruben Mraz MD', 'Voluptate omnis veniam qui aut culpa velit blanditiis. Repellat dolorem recusandae deserunt minus. Est dolor sint ratione aspernatur dolor perferendis explicabo. Aut amet earum unde quis.', 1, 'dr-ruben-mraz-md'),
+(18, 'Rudy Mayert I', 'Ipsam aut voluptas natus quis. Magni officia non qui tempora porro. Vel saepe nihil consequatur autem dolorem.', 1, 'rudy-mayert-i'),
+(19, 'Prof. Faustino Bins MD', 'Incidunt voluptatum a dolorem eligendi occaecati aspernatur laborum. Quisquam vitae porro itaque animi. Nihil iste consequatur est qui consequatur odio. Excepturi assumenda nostrum pariatur rerum quasi labore eveniet. Occaecati nihil ipsum voluptate libero ut iste.', 1, 'prof-faustino-bins-md'),
+(20, 'Alessandra Reilly PhD', 'Ipsum velit velit quibusdam aut natus dolore tempore. Et pariatur aut est aspernatur. Saepe consequatur qui et animi blanditiis voluptas et inventore. Nostrum est natus non ab et expedita quo.', 1, 'alessandra-reilly-phd'),
+(21, 'Mr. Dawson Ondricka', 'Harum quo magni quos optio nostrum non. Illum voluptatum totam eum fuga natus quo dolor. Omnis voluptate in iste doloremque deleniti vel consequatur facere.', 1, 'mr-dawson-ondricka'),
+(22, 'Jasen Lockman', 'Ab voluptas vero perferendis quaerat enim. Occaecati repellendus aut voluptas sed et itaque.', 1, 'jasen-lockman'),
+(23, 'Dr. Eudora Beier DVM', 'Et aut aliquam perspiciatis. Autem sed consequatur cum incidunt hic iure. Eum excepturi dolorem cumque id.', 1, 'dr-eudora-beier-dvm'),
+(24, 'Paxton Wunsch', 'Dolorum error dolorem et quia consequatur aut. Corporis aut nostrum et sint.', 1, 'paxton-wunsch'),
+(25, 'Enrique Hudson', 'Culpa inventore a itaque quia non. Nemo voluptatum expedita mollitia animi consectetur. Illo provident eius quia adipisci consequuntur cum. Ipsa voluptatem quo velit inventore facere fugit voluptate voluptates.', 1, 'enrique-hudson'),
+(26, 'Fay Runolfsson', 'Quo iste consequuntur voluptatibus est ipsum. Voluptatibus ducimus dolorum qui rerum accusantium officiis minima fuga. Dolore saepe sunt possimus.', 1, 'fay-runolfsson'),
+(27, 'Dr. Rodolfo Robel IV', 'Consequuntur nam enim accusantium sequi aut. Tempore consectetur ad error autem et quis explicabo. Tempora accusamus fugiat et. Qui nostrum eum et fuga. Ea sed saepe dolores.', 1, 'dr-rodolfo-robel-iv'),
+(28, 'Miss Esta Wolff DVM', 'Dolorem quisquam eos cupiditate consequuntur fugiat odio. Delectus magni est non sit ipsum. Minima consequuntur numquam nulla vel aut sunt dolorum. Hic sequi debitis quam et quae adipisci quis.', 1, 'miss-esta-wolff-dvm'),
+(29, 'Miss Lila Dooley PhD', 'Consequuntur quasi sint dicta consequatur temporibus deserunt vel. Praesentium vel ex veritatis in aut. Expedita adipisci perferendis id animi sint.', 1, 'miss-lila-dooley-phd'),
+(30, 'Verna Corwin MD', 'Inventore molestiae aspernatur illo maiores dicta velit. Eveniet et quidem vitae vel modi. Provident vitae dolores vel beatae deleniti.', 1, 'verna-corwin-md'),
+(31, 'Nedra Toy', 'Expedita quia aut sit eos mollitia nesciunt magnam. Doloribus in cum asperiores.', 1, 'nedra-toy'),
+(32, 'Cordie Williamson', 'Consequuntur fugiat laboriosam dicta illo deleniti incidunt. Aut iste itaque nihil est. Sit est molestiae in vero rem deleniti numquam. Cum neque odit vero cupiditate et maxime qui.', 1, 'cordie-williamson'),
+(33, 'Providenci Johnson III', 'Asperiores dolor iusto fugit rerum qui alias sint. Enim expedita quia voluptas quisquam omnis mollitia. Libero dolores expedita quis qui dolorum. Corporis nulla molestias sed eius blanditiis quibusdam dolorem.', 1, 'providenci-johnson-iii'),
+(34, 'Thea King', 'Aspernatur asperiores exercitationem blanditiis blanditiis. Sunt qui sit a labore aperiam aut pariatur. Non ad ut ab asperiores nulla incidunt impedit. Sunt ea sit quod consequatur.', 1, 'thea-king'),
+(35, 'Grover Smith DDS', 'Laboriosam neque fuga non quod assumenda nam. Nihil eaque occaecati eum similique ducimus laudantium. Quis illo pariatur quod dolores. Qui qui consequatur praesentium. Dignissimos totam dolor nemo sunt voluptatem.', 1, 'grover-smith-dds'),
+(36, 'Araceli Tremblay I', 'Consequatur dolore deleniti quisquam maxime impedit quod vero. Distinctio veniam exercitationem consectetur eos non sunt et. Eum et excepturi aut minima quod.', 1, 'araceli-tremblay-i'),
+(37, 'Gayle Veum', 'Molestias voluptatem recusandae nam expedita quis sint neque. Velit officiis voluptas consequatur eos. Omnis sint laboriosam eum reprehenderit qui aliquam. Est cum nisi et aliquid aut.', 1, 'gayle-veum'),
+(38, 'Frederic Hills', 'Et rerum nemo amet minima molestiae. Cumque cumque hic voluptas aut aliquam iste et. Quasi inventore alias voluptatem. Placeat tempore at et quas repudiandae.', 1, 'frederic-hills'),
+(39, 'Santiago Wintheiser', 'Similique velit quae pariatur et. Fugiat enim quis est ea est. Esse explicabo qui ea. Omnis et sapiente aliquid recusandae vero et fugiat quidem.', 1, 'santiago-wintheiser'),
+(40, 'Duane Schinner', 'Modi corrupti tenetur totam dicta animi illo ut. Ipsam quasi ut laboriosam eius molestiae rerum. Beatae minus id sequi iste fugit aperiam sint. Id repellendus error et aut quam ratione.', 1, 'duane-schinner'),
+(41, 'Prof. Greg Brekke II', 'Veritatis et veniam quo quia sapiente et est. Expedita quidem consequatur quia.', 1, 'prof-greg-brekke-ii'),
+(42, 'Clement Beatty', 'Distinctio rerum doloremque dolorem harum veritatis eaque neque. Veritatis reiciendis iste minus quam. Enim sint nulla dolorum explicabo non quibusdam nobis. Laborum earum aut excepturi totam quis quia.', 1, 'clement-beatty'),
+(43, 'Abdiel Aufderhar', 'Odio sed possimus dicta aperiam ut. Itaque quidem voluptates maiores et. Vitae qui aliquam atque nam et et est et.', 1, 'abdiel-aufderhar'),
+(44, 'Adella Rutherford', 'Enim rem aut optio nulla nobis veniam itaque. Reprehenderit consequuntur omnis ut fugit. Sed quo dolor sint error accusantium voluptatem explicabo. Et deleniti numquam accusamus eveniet numquam maxime. Quia sed quos voluptas perspiciatis omnis doloremque.', 1, 'adella-rutherford'),
+(45, 'Nelda Sanford', 'Soluta et quia enim qui aliquam aliquid sit. Tempora eum et aut quidem. Voluptatem temporibus sed recusandae.', 1, 'nelda-sanford'),
+(46, 'Emery Kutch', 'Eum natus aut nihil dolor accusantium autem tempore. Qui cupiditate dicta nam est autem aut. Sed temporibus esse quia dolores vitae ut.', 1, 'emery-kutch'),
+(47, 'Dasia Kerluke', 'Dolores sed eligendi perspiciatis ab quisquam. Et soluta qui dolor magnam illum. Adipisci qui nulla voluptates nam.', 1, 'dasia-kerluke'),
+(48, 'Brenden Fritsch', 'Nihil ut provident et deserunt possimus. Odio voluptas at quas doloremque quo. Enim a dolores quidem laborum temporibus ea. Nulla vero ab aut dolores architecto sed dignissimos sed.', 1, 'brenden-fritsch'),
+(49, 'Cary Marquardt', 'Fugit facilis corporis et ad. Provident iste animi tempora deleniti. Aperiam libero enim est blanditiis. Optio doloribus est quo dolores ipsa.', 1, 'cary-marquardt'),
+(50, 'Adelbert Erdman', 'Aliquid quaerat incidunt consectetur qui unde at. Quo atque ratione voluptatem ut quam saepe repellendus. Ipsa commodi asperiores debitis possimus impedit doloremque. Consequatur quis quia non eaque.', 1, 'adelbert-erdman'),
+(51, 'Dr. Alena Quitzon Jr.', 'Dolores eligendi et quis nemo. Natus ipsum et perferendis porro. Quis nulla exercitationem earum quis.', 1, 'dr-alena-quitzon-jr'),
+(52, 'Pink Maggio', 'Temporibus est consequuntur ullam beatae nobis voluptas incidunt. Quidem minima laboriosam velit. Ratione fuga officia necessitatibus.', 1, 'pink-maggio'),
+(53, 'Sherwood Gleichner', 'Velit dolore alias laborum molestiae fugiat consequatur. Pariatur aut veniam quaerat velit est sint excepturi. Quidem aut sunt doloribus sit expedita eos. Et quas non omnis totam quisquam illum et.', 1, 'sherwood-gleichner'),
+(54, 'Keeley Grady', 'Rerum id qui pariatur. Tempore consectetur dignissimos quia nihil rem optio nihil quia. Ut impedit tempora fuga repellat accusantium eius omnis. Architecto velit quasi dicta eum.', 1, 'keeley-grady'),
+(55, 'Mr. Elroy Schaefer III', 'Officia ut non aliquam ipsa iure. Autem suscipit temporibus labore est voluptatibus.', 1, 'mr-elroy-schaefer-iii'),
+(56, 'Leon Bauch', 'Ratione voluptas doloribus ut delectus ducimus et qui. Laboriosam sequi dolorem esse et doloribus deserunt. Atque omnis nihil voluptatibus optio quidem quis deleniti. Excepturi dolorum et vel ut nihil dolores ratione.', 1, 'leon-bauch'),
+(57, 'Jovani Lockman', 'Dignissimos omnis sit ea incidunt quam consequatur. Ipsum aut omnis eius reiciendis. Ullam perspiciatis dolor neque voluptatem possimus aspernatur qui. Enim sint ut exercitationem dolore quo sit.', 1, 'jovani-lockman'),
+(58, 'Grover Connelly', 'Autem facilis praesentium quisquam cupiditate voluptas possimus error. Eos sapiente architecto cupiditate placeat quos ad voluptatem repellendus.', 1, 'grover-connelly'),
+(59, 'Mrs. Marcelle Wolff', 'Officia nobis quae quidem id aliquid in id. Qui illo ipsa quia neque et. Aut voluptas repellat sint voluptates corporis et voluptatibus in. Laboriosam voluptatum suscipit facilis.', 1, 'mrs-marcelle-wolff'),
+(60, 'Reyna Lueilwitz', 'Et ut quis possimus sed necessitatibus odit sed quia. Vel sit natus maiores nam dicta. Distinctio vel placeat ut aut ducimus officiis consequatur.', 1, 'reyna-lueilwitz'),
+(61, 'Kaia Spinka', 'Accusantium expedita sunt voluptas. Architecto facilis quis omnis molestiae sunt. Numquam ducimus dolorem eveniet excepturi.', 1, 'kaia-spinka'),
+(62, 'Cassidy Trantow', 'Ut tempora odit sequi libero qui vel quo enim. Quibusdam accusamus mollitia dolorem. Molestiae eveniet dolorem at nostrum. Ex quod natus expedita dolor sunt.', 1, 'cassidy-trantow'),
+(63, 'Prof. Donnie Flatley DVM', 'Aperiam pariatur tempora soluta dicta et suscipit velit. Odio qui laboriosam fugit neque pariatur. Magni reprehenderit repudiandae facilis ullam sunt illo.', 1, 'prof-donnie-flatley-dvm'),
+(64, 'Prof. Shaun Armstrong', 'Illum molestiae expedita et. Incidunt impedit voluptatem reprehenderit est. Dolorem quo repellendus quo non consequatur aliquam.', 1, 'prof-shaun-armstrong'),
+(65, 'Prof. Verla Little I', 'Delectus iusto ut delectus. Est ullam qui et molestiae quaerat. Occaecati soluta qui veniam officia. Quasi eos est qui est voluptates sint quia ratione.', 1, 'prof-verla-little-i'),
+(66, 'Celestine Cole', 'Error veniam est quaerat in veniam non maiores quia. Et fugiat possimus sit. Quaerat voluptatem qui esse est. Neque voluptatem ratione omnis omnis doloremque quidem rerum est.', 1, 'celestine-cole'),
+(67, 'Dylan Nienow', 'Tempora quos minima vero perferendis. Omnis sequi unde id aut. Ea quo harum aliquam earum ducimus sed.', 1, 'dylan-nienow'),
+(68, 'Delbert Wisoky', 'Occaecati et nesciunt et repudiandae. Itaque ut sit rem assumenda officia nam. Omnis doloremque itaque consequuntur voluptas. Fuga eos qui similique velit. Nesciunt velit qui provident reiciendis.', 1, 'delbert-wisoky'),
+(69, 'Marty Bins', 'Dignissimos sit nam atque dolores praesentium. Voluptas qui minus amet ex aut omnis. Quibusdam fuga quis aut quaerat animi.', 1, 'marty-bins'),
+(70, 'Miss Clara Jerde DVM', 'Id voluptates et maxime accusamus nobis quia officia. Reiciendis rerum repellendus eum dignissimos labore. Eos ut necessitatibus iste est quos earum corrupti.', 1, 'miss-clara-jerde-dvm'),
+(71, 'Estella Luettgen', 'Beatae eos ut et est sunt ut. Possimus consequatur eos inventore est. Facilis id nihil sit molestias laudantium.', 1, 'estella-luettgen'),
+(72, 'Adolfo Lesch', 'Ipsum impedit ducimus molestias nihil. Similique est sed illo rerum ut harum.', 1, 'adolfo-lesch'),
+(73, 'Rocky Kerluke', 'Maxime quis minus vel et accusamus. Eos et dolorem iste. Sit voluptas dolore omnis ratione.', 1, 'rocky-kerluke'),
+(74, 'Kyleigh Harber', 'Sequi in molestiae sunt vel magnam qui voluptatem. Et aut repellendus temporibus error. Libero nobis eveniet quia id. Repudiandae unde ullam repellat.', 1, 'kyleigh-harber'),
+(75, 'Kory Rath', 'Ut quis rerum aspernatur dolorum sunt. Voluptatem vitae delectus aut doloribus facilis. Perspiciatis voluptas aliquam dolores. Et beatae earum sed quas ut et.', 1, 'kory-rath'),
+(76, 'Fae Runte MD', 'Quasi tempora nesciunt nisi rem delectus. Nesciunt molestiae architecto qui tenetur voluptatem. Totam sapiente error voluptatem et.', 1, 'fae-runte-md'),
+(77, 'Courtney Mann', 'Perferendis dolor voluptatibus deleniti. Tempore fuga eum dolor quia aperiam eos quibusdam. Et explicabo consequatur odit omnis. Molestiae sit ut fugit est maxime.', 1, 'courtney-mann'),
+(78, 'Lincoln Braun', 'Ex harum officia soluta nesciunt ut. Eum et quis earum consequatur qui sit. Quis aspernatur non nihil et ipsum eaque. In corrupti qui ut ut.', 1, 'lincoln-braun'),
+(79, 'Ariel Ratke Sr.', 'Ut dolorem saepe voluptate aut quia odio. Suscipit qui quas et nobis corrupti culpa.', 1, 'ariel-ratke-sr'),
+(80, 'Camille Keebler', 'Consequatur et ut dolorem et expedita. Placeat et qui eius quo tempora magnam dolorem et. Eius et dolores rerum doloribus fugit. Rerum inventore qui quae dicta optio.', 1, 'camille-keebler'),
+(81, 'Robyn Dooley Sr.', 'Et sapiente tempore quis deserunt. Cupiditate adipisci nisi repellat iusto optio necessitatibus.', 1, 'robyn-dooley-sr'),
+(82, 'Darrion Kling I', 'Dolorum et dolor fugiat tempore voluptas fuga. Molestiae id in et vero. Aut ipsa voluptatum possimus ipsum aut cupiditate tenetur. Perspiciatis voluptatem deleniti velit qui veniam est facilis laudantium.', 1, 'darrion-kling-i'),
+(83, 'Dr. Neoma Paucek Jr.', 'Cum est iure necessitatibus. Qui labore non eos repudiandae. Sed unde maxime tempore natus enim. Excepturi et laborum molestiae iusto consequatur aut iusto numquam.', 1, 'dr-neoma-paucek-jr'),
+(84, 'Dr. Lia Romaguera Sr.', 'Et provident eveniet quia non est facilis. Sunt dolorem et tempore minima inventore. Debitis possimus voluptates velit quo facere explicabo explicabo. Optio laboriosam nesciunt facilis voluptate et et.', 1, 'dr-lia-romaguera-sr'),
+(85, 'Christa Carter', 'Quos dolorum quam quaerat dolorum sapiente modi. Quod quos eos doloribus nihil delectus blanditiis earum corporis. Repellendus mollitia cupiditate voluptatem reprehenderit a.', 1, 'christa-carter'),
+(86, 'Alysa Bergstrom', 'Vel sint veritatis ratione voluptatibus. Iste facere velit nihil eligendi voluptatem non.', 1, 'alysa-bergstrom'),
+(87, 'Miss Pinkie Bosco V', 'Aut libero voluptatem quibusdam odit deleniti quasi iusto. Nostrum quod aspernatur itaque odit fuga dicta. Doloremque id est necessitatibus debitis eos.', 1, 'miss-pinkie-bosco-v'),
+(88, 'Christop Beahan V', 'Consequatur quisquam ea expedita et voluptas consequatur. Possimus quia suscipit dolores voluptas. Magni atque nulla molestias quasi enim laboriosam ullam.', 1, 'christop-beahan-v'),
+(89, 'Prof. Roel Schuster V', 'Consequuntur modi delectus atque eum. Asperiores et sit et quibusdam eius molestiae nisi.', 1, 'prof-roel-schuster-v'),
+(90, 'Ms. Dandre Kuhic I', 'Aut earum a inventore quae doloribus excepturi sit. At adipisci saepe perferendis. Sapiente dolorem eos ea nihil quod provident. Aut harum adipisci optio aut ex.', 1, 'ms-dandre-kuhic-i'),
+(91, 'Dayana Hoppe Jr.', 'Voluptas tempore et praesentium qui dolorum. Exercitationem et aperiam temporibus excepturi earum. Unde quis quisquam iste blanditiis omnis. Quo quidem autem et qui.', 1, 'dayana-hoppe-jr'),
+(92, 'Lloyd Hickle', 'Delectus expedita provident totam aut nemo et. Expedita debitis explicabo animi odio culpa. Dolore voluptatem architecto et sed consectetur est nostrum.', 1, 'lloyd-hickle'),
+(93, 'Carole Hackett I', 'Explicabo quam omnis unde saepe. Explicabo consectetur voluptatem repellendus perspiciatis. Voluptas esse et et. Laborum repudiandae veniam fugit.', 1, 'carole-hackett-i'),
+(94, 'Thelma Hudson', 'Officia ut accusamus quam provident sunt magni in. Delectus vero assumenda provident ipsam. Illum architecto provident et itaque. Officiis laudantium natus voluptatum quod repellendus pariatur aut.', 1, 'thelma-hudson'),
+(95, 'Terrence Leffler', 'Omnis aperiam rerum doloremque non sunt consequatur inventore quo. Qui qui enim sint harum et quisquam nulla. Est vero qui ut possimus fugit quia.', 1, 'terrence-leffler'),
+(96, 'Kurt Parisian DDS', 'Voluptatem error provident officiis voluptas consequuntur a ut. Unde consectetur magni ut in aliquid voluptatum quia. Enim facere provident assumenda aspernatur. Consequatur quisquam aut consequuntur eligendi voluptas atque.', 1, 'kurt-parisian-dds'),
+(97, 'Gonzalo Leannon', 'Voluptatum laudantium vel ipsum asperiores debitis aut. Sint et atque quisquam nostrum ratione aut autem. Reprehenderit quos laboriosam fugit velit voluptas.', 1, 'gonzalo-leannon'),
+(98, 'Dr. Lempi Zieme', 'Et itaque sequi et ea quibusdam. Accusantium sed adipisci id laudantium cupiditate sed. Et ea fuga quo iste autem. Sunt eligendi voluptate cupiditate ut dolor quo labore omnis.', 1, 'dr-lempi-zieme'),
+(99, 'Prof. Nya Ferry I', 'Nihil sequi doloremque perspiciatis. Veritatis reiciendis rem iure maiores distinctio in.', 1, 'prof-nya-ferry-i'),
+(100, 'Justina Swaniawski IV', 'Iusto nesciunt est earum doloribus fugit asperiores vitae. Et velit facere maiores laudantium sint id. Voluptatum optio recusandae eligendi modi molestiae labore eos. Cupiditate impedit qui culpa error unde id.', 1, 'justina-swaniawski-iv');
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`orders` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `total_price` INT NOT NULL,
-  `shipping_fee` INT NULL DEFAULT NULL,
-  `subtotal_price` INT NULL DEFAULT NULL,
-  `order_name` VARCHAR(100) NULL,
-  `order_phone` VARCHAR(10) NULL,
-  `order_address` VARCHAR(255) NULL,
-  `order_status` INT NULL,
-  `payment_status` INT NULL,
-  `created_at` TIMESTAMP NULL,
-  `updated_at` TIMESTAMP NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_bill_users1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_bill_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `borrow_book_pj`.`users` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- --------------------------------------------------------
 
+--
+-- Cấu trúc bảng cho bảng `books`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`books`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`books` ;
+CREATE TABLE `books` (
+  `id` int NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `quantity` int NOT NULL,
+  `description` mediumtext,
+  `publish_year` varchar(4) DEFAULT NULL,
+  `publisher` varchar(45) DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `weight` int DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`books` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
-  `quantity` INT NOT NULL,
-  `description` MEDIUMTEXT NULL DEFAULT NULL,
-  `publish_year` VARCHAR(4) NULL DEFAULT NULL,
-  `publisher` VARCHAR(45) NULL,
-  `status` INT NULL,
-  `image` VARCHAR(255) NULL,
-  `weight` INT NULL,
-  `slug` VARCHAR(255) NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Đang đổ dữ liệu cho bảng `books`
+--
 
+INSERT INTO `books` (`id`, `name`, `quantity`, `description`, `publish_year`, `publisher`, `status`, `image`, `weight`, `slug`, `created_at`, `updated_at`) VALUES
+(1, 'pplplp', 4, 'cádadscawc', '1234', 'adascsdac', 1, 'images/1712991702.png', 122, 'pplplp', '2024-04-13 00:01:43', '2024-04-13 00:01:43'),
+(2, 'thêm để test', 134, 'test bằng một đoạn thật dài để xem là giao diện có hiển thị không nhưng mà lười quá nên chắc type tới đây thôi huhu, nhưng mà phải rasdng type thêm một câu nữa chứ không thôi là có bug mà không biết', '1234', 'cádcdsc', 1, 'images/1716277146.jpg', 123, 'them-de-test', '2024-05-21 00:39:07', '2024-05-21 00:39:07'),
+(4, 'kduy', 123, 'c', '123', 'ádc', 1, 'images/1716285156.jpg', 12, 'kduy-2', '2024-05-21 02:52:36', '2024-05-21 02:52:36');
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`order_details`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`order_details` ;
+-- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`order_details` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `order_id` INT NOT NULL,
-  `book_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  `price` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_bill_detail_bill1_idx` (`order_id` ASC) VISIBLE,
-  INDEX `fk_bill_detail_book1_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_bill_detail_bill1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `borrow_book_pj`.`orders` (`id`),
-  CONSTRAINT `fk_bill_detail_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Cấu trúc bảng cho bảng `book_has_authors`
+--
 
+CREATE TABLE `book_has_authors` (
+  `book_id` int NOT NULL,
+  `author_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`book_has_author`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`book_has_author` ;
+--
+-- Đang đổ dữ liệu cho bảng `book_has_authors`
+--
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`book_has_author` (
-  `book_id` INT NOT NULL,
-  `author_id` INT NOT NULL,
-  PRIMARY KEY (`book_id`, `author_id`),
-  INDEX `fk_book_has_author_author1_idx` (`author_id` ASC) VISIBLE,
-  INDEX `fk_book_has_author_book_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_book_has_author_author1`
-    FOREIGN KEY (`author_id`)
-    REFERENCES `borrow_book_pj`.`authors` (`id`),
-  CONSTRAINT `fk_book_has_author_book`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+INSERT INTO `book_has_authors` (`book_id`, `author_id`) VALUES
+(1, 1),
+(2, 2),
+(2, 3),
+(1, 9),
+(2, 11),
+(2, 16);
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`genres`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`genres` ;
+--
+-- Cấu trúc bảng cho bảng `book_has_genres`
+--
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`genres` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `description` MEDIUMTEXT NULL DEFAULT NULL,
-  `status` INT NULL,
-  `slug` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `book_has_genres` (
+  `book_id` int NOT NULL,
+  `genre_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `book_has_genres`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`book_has_genre`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`book_has_genre` ;
+INSERT INTO `book_has_genres` (`book_id`, `genre_id`) VALUES
+(1, 1),
+(2, 1);
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`book_has_genre` (
-  `book_id` INT NOT NULL,
-  `genre_id` INT NOT NULL,
-  PRIMARY KEY (`book_id`, `genre_id`),
-  INDEX `fk_book_has_genre_genre1_idx` (`genre_id` ASC) VISIBLE,
-  INDEX `fk_book_has_genre_book1_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_book_has_genre_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`),
-  CONSTRAINT `fk_book_has_genre_genre1`
-    FOREIGN KEY (`genre_id`)
-    REFERENCES `borrow_book_pj`.`genres` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+-- --------------------------------------------------------
 
+--
+-- Cấu trúc bảng cho bảng `book_price`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`book_price`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`book_price` ;
+CREATE TABLE `book_price` (
+  `id` int NOT NULL,
+  `book_price` int NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `end_at` timestamp NULL DEFAULT NULL,
+  `book_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`book_price` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `book_price` INT NOT NULL,
-  `status` TINYINT(1) NOT NULL,
-  `end_at` TIMESTAMP NULL DEFAULT NULL,
-  `book_id` INT NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`, `book_id`),
-  INDEX `fk_book_price_book1_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_book_price_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Đang đổ dữ liệu cho bảng `book_price`
+--
 
+INSERT INTO `book_price` (`id`, `book_price`, `status`, `end_at`, `book_id`, `created_at`, `updated_at`) VALUES
+(1, 112112, 1, NULL, 1, NULL, NULL),
+(2, 500000, 0, '2024-05-22 02:31:51', 2, NULL, '2024-05-22 02:31:51'),
+(3, 12345, 1, NULL, 4, '2024-05-21 02:52:36', '2024-05-21 02:52:36'),
+(4, 7000, 1, NULL, 2, '2024-05-22 02:31:51', '2024-05-22 02:31:51');
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`carts`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`carts` ;
+-- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`carts` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `book_id` INT NOT NULL,
-  `quantity` INT NOT NULL,
-  `price` INT NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_cart_users1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_cart_book1_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_cart_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`),
-  CONSTRAINT `fk_cart_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `borrow_book_pj`.`users` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Cấu trúc bảng cho bảng `carts`
+--
 
+CREATE TABLE `carts` (
+  `user_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`personal_access_tokens`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`personal_access_tokens` ;
+-- --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`personal_access_tokens` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tokenable_type` TEXT NULL DEFAULT NULL,
-  `tokenable_id` INT NOT NULL,
-  `name` TEXT NOT NULL,
-  `token` TEXT NOT NULL,
-  `abilities` TEXT NULL DEFAULT NULL,
-  `expires_at` TIMESTAMP NULL DEFAULT NULL,
-  `last_used_at` TIMESTAMP NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+--
+-- Cấu trúc bảng cho bảng `coupons`
+--
 
+CREATE TABLE `coupons` (
+  `id` int NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `code` varchar(256) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `discount_value` int NOT NULL,
+  `status` int NOT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`rating`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`rating` ;
+--
+-- Đang đổ dữ liệu cho bảng `coupons`
+--
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`rating` (
-  `user_id` INT NOT NULL,
-  `book_id` INT NOT NULL,
-  `score` INT NOT NULL,
-  `title` VARCHAR(45) NULL,
-  `description` MEDIUMTEXT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`, `book_id`),
-  INDEX `fk_book_has_users_users1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_book_has_users_book1_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_book_has_users_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`),
-  CONSTRAINT `fk_book_has_users_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `borrow_book_pj`.`users` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+INSERT INTO `coupons` (`id`, `name`, `code`, `type`, `discount_value`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Summer Discount', 'SUMMER123', 'percentage', 20, 1, '2024-04-11 07:39:01', '2024-04-11 07:39:01'),
+(3, 'kduy', 'xxssa', 'percentage', -2, 1, '2024-04-12 06:01:08', '2024-04-12 06:01:08'),
+(6, 'qw', 'xas', 'percentage', -2, 1, '2024-04-12 06:03:45', '2024-04-12 06:03:45'),
+(7, 'duy123', 'ccc', 'direct', 1, 1, '2024-04-12 06:27:47', '2024-04-12 06:27:47');
 
+-- --------------------------------------------------------
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`wishlists`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`wishlists` ;
+--
+-- Cấu trúc bảng cho bảng `genres`
+--
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`wishlists` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `book_id` INT NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_wishlist_book1_idx` (`book_id` ASC) VISIBLE,
-  INDEX `fk_wishlist_users1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_wishlist_book1`
-    FOREIGN KEY (`book_id`)
-    REFERENCES `borrow_book_pj`.`books` (`id`),
-  CONSTRAINT `fk_wishlist_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `borrow_book_pj`.`users` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE `genres` (
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `description` mediumtext,
+  `status` int DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `genres`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`news`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`news` ;
+INSERT INTO `genres` (`id`, `name`, `description`, `status`, `slug`) VALUES
+(1, 'asdf', 'mmmmm', 1, 'asdf');
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`news` (
-  `id` INT NOT NULL,
-  `title` VARCHAR(255) NULL,
-  `content` LONGTEXT NULL,
-  `image` VARCHAR(255) NULL,
-  `author` VARCHAR(45) NULL,
-  `status` INT NULL,
-  `slug` VARCHAR(255) NULL,
-  `created_at` TIMESTAMP NULL,
-  `updated_at` TIMESTAMP NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+-- --------------------------------------------------------
 
+--
+-- Cấu trúc bảng cho bảng `migrations`
+--
 
--- -----------------------------------------------------
--- Table `borrow_book_pj`.`slider`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `borrow_book_pj`.`sliders` ;
+CREATE TABLE `migrations` (
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `borrow_book_pj`.`sliders` (
-  `id` INT NOT NULL,
-  `title` VARCHAR(100) NULL,
-  `description` VARCHAR(255) NULL,
-  `status` INT NULL,
-  `image` VARCHAR(255) NULL,
-  `created_at` TIMESTAMP NULL,
-  `updated_at` TIMESTAMP NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+--
+-- Đang đổ dữ liệu cho bảng `migrations`
+--
 
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2024_03_28_082844_create_permission_tables', 1);
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `model_has_permissions`
+--
+
+CREATE TABLE `model_has_permissions` (
+  `permission_id` bigint UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `model_has_roles`
+--
+
+CREATE TABLE `model_has_roles` (
+  `role_id` bigint UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `model_has_roles`
+--
+
+INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
+(1, 'App\\Models\\User', 2),
+(3, 'App\\Models\\User', 2),
+(6, 'App\\Models\\User', 2),
+(7, 'App\\Models\\User', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `news`
+--
+
+CREATE TABLE `news` (
+  `id` int NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `content` longtext,
+  `image` varchar(255) DEFAULT NULL,
+  `author` varchar(45) DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `total_price` float NOT NULL,
+  `shipping_fee` float DEFAULT NULL,
+  `subtotal_price` float DEFAULT NULL,
+  `discount` float NOT NULL,
+  `order_name` varchar(100) DEFAULT NULL,
+  `order_phone` varchar(10) DEFAULT NULL,
+  `order_address` varchar(255) DEFAULT NULL,
+  `order_status` int DEFAULT NULL,
+  `payment_status` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `total_price`, `shipping_fee`, `subtotal_price`, `discount`, `order_name`, `order_phone`, `order_address`, `order_status`, `payment_status`, `created_at`, `updated_at`) VALUES
+(11, 2, 180457, 49000, 131457, 0, 'Duy Võ', '0933012395', '111, Xã Mường Giôn, Huyện Quỳnh Nhai, Sơn La', 0, 0, '2024-05-27 00:48:03', '2024-05-27 00:48:03'),
+(12, 2, 497448, 49000, 448448, 99489.6, 'Duy Võ', '0933012395', '111, Xã Chiềng Hặc, Huyện Yên Châu, Sơn La', 0, 0, '2024-05-27 00:48:45', '2024-05-27 00:48:45'),
+(13, 2, 345356, 49000, 382695, 86339, 'Duy Võ', '0933012395', '111, Xã Sập Vạt, Huyện Yên Châu, Sơn La', 0, 0, '2024-05-27 00:50:55', '2024-05-27 00:50:55'),
+(14, 2, 41076.8, 39001, 12345, 10269.2, 'Duy Võ', '0933012395', '111, Xã Ân Đức, Huyện Hoài Ân, Bình Định', 0, 0, '2024-05-27 01:43:01', '2024-05-27 01:43:01');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `id` int NOT NULL,
+  `order_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `price` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_details`
+--
+
+INSERT INTO `order_details` (`id`, `order_id`, `book_id`, `quantity`, `price`) VALUES
+(1, 1, 1, 4, 448448),
+(2, 4, 1, 4, 448448),
+(3, 4, 2, 134, 67000000),
+(4, 4, 2, 134, 938000),
+(5, 7, 1, 4, 448448),
+(6, 7, 4, 123, 1518435),
+(7, 8, 4, 123, 1518435),
+(8, 9, 1, 4, 448448),
+(9, 10, 1, 4, 448448),
+(10, 10, 4, 123, 1518435),
+(11, 11, 1, 4, 448448),
+(12, 11, 2, 134, 67000000),
+(13, 11, 2, 134, 938000),
+(14, 11, 4, 123, 1518435),
+(15, 12, 1, 4, 448448),
+(16, 13, 4, 123, 1518435),
+(17, 14, 4, 123, 1518435);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'create books', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(2, 'read books', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(3, 'update books', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(4, 'delete books', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(5, 'create news', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(6, 'read news', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(7, 'update news', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(8, 'delete news', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(9, 'create authors', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(10, 'read authors', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(11, 'update authors', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(12, 'delete authors', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(13, 'create genres', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(14, 'read genres', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(15, 'update genres', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(16, 'delete genres', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(17, 'create users', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(18, 'read users', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(19, 'update users', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(20, 'delete users', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(21, 'create sliders', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(22, 'read sliders', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(23, 'update sliders', 'web', '2024-04-02 00:34:44', '2024-04-02 00:34:44'),
+(24, 'delete sliders', 'web', '2024-04-02 00:34:45', '2024-04-02 00:34:45'),
+(25, 'create orders', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(26, 'read orders', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(27, 'update orders', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(28, 'delete orders', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(29, 'create roles', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(30, 'read roles', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(31, 'update roles', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(32, 'delete roles', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54'),
+(33, 'read statistics', 'web', '2024-04-08 03:29:54', '2024-04-08 03:29:54');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` int UNSIGNED NOT NULL,
+  `tokenable_type` text,
+  `tokenable_id` int NOT NULL,
+  `name` text NOT NULL,
+  `token` text NOT NULL,
+  `abilities` text,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `rating`
+--
+
+CREATE TABLE `rating` (
+  `user_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `score` int NOT NULL,
+  `title` varchar(45) DEFAULT NULL,
+  `description` mediumtext,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', 'web', '2024-04-02 00:34:45', '2024-04-02 00:34:45'),
+(2, 'kduy', 'web', '2024-04-05 05:21:55', '2024-04-05 05:21:55'),
+(3, 'kduydvfsv', 'web', '2024-04-05 05:23:46', '2024-04-05 05:23:46'),
+(4, 'kduydvfsv123456', 'web', '2024-04-05 05:24:16', '2024-04-05 05:24:16'),
+(5, 'kduydvfsvdcascas123456', 'web', '2024-04-05 05:27:44', '2024-04-05 05:27:44'),
+(6, '12', 'web', '2024-04-05 05:27:58', '2024-04-05 05:27:58'),
+(7, 'Võ Khương Duy', 'web', '2024-04-05 05:37:58', '2024-04-05 05:37:58');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `role_has_permissions`
+--
+
+CREATE TABLE `role_has_permissions` (
+  `permission_id` bigint UNSIGNED NOT NULL,
+  `role_id` bigint UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `role_has_permissions`
+--
+
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(11, 2),
+(14, 2),
+(17, 2),
+(1, 4),
+(2, 4),
+(4, 4),
+(7, 4),
+(9, 4),
+(20, 4),
+(21, 4),
+(22, 4),
+(1, 5),
+(2, 5),
+(4, 5),
+(6, 5),
+(7, 5),
+(9, 5),
+(20, 5),
+(21, 5),
+(22, 5),
+(1, 6),
+(2, 6),
+(4, 6),
+(7, 6),
+(9, 6),
+(20, 6),
+(21, 6),
+(22, 6),
+(5, 7),
+(22, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `sliders`
+--
+
+CREATE TABLE `sliders` (
+  `id` int NOT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `status` int DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `sliders`
+--
+
+INSERT INTO `sliders` (`id`, `title`, `description`, `status`, `image`, `created_at`, `updated_at`) VALUES
+(1, 'awcasdcawe', 'ewafweaqcewverfqewfewqfcewacawefsdca', 1, 'images/1705990233.png', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `users`
+--
+
+CREATE TABLE `users` (
+  `id` int NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `email` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `status` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Duy Vo', 'admin@gmail.com', '$2a$12$Arnt6e2e6kxRq2c/1dIaTONYwTuMAMXTN6Ag5/JdXuzSZfPQ8vfqO', 1, NULL, NULL),
+(2, 'Super Admin', 'superadmin@gmail.com', '$2y$10$ozWf41hr1V8fL.FZbnKFO.9yqlKPMOnx7nEA/B/cYb.sVFuGunspi', 1, '2024-04-02 00:50:16', '2024-04-02 00:50:16');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user_has_coupons`
+--
+
+CREATE TABLE `user_has_coupons` (
+  `user_id` int NOT NULL,
+  `coupon_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_has_coupons`
+--
+
+INSERT INTO `user_has_coupons` (`user_id`, `coupon_id`) VALUES
+(2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `user_id` int NOT NULL,
+  `book_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `authors`
+--
+ALTER TABLE `authors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `book_has_authors`
+--
+ALTER TABLE `book_has_authors`
+  ADD PRIMARY KEY (`book_id`,`author_id`),
+  ADD KEY `fk_book_has_author_author1_idx` (`author_id`),
+  ADD KEY `fk_book_has_author_book_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `book_has_genres`
+--
+ALTER TABLE `book_has_genres`
+  ADD PRIMARY KEY (`book_id`,`genre_id`),
+  ADD KEY `fk_book_has_genre_genre1_idx` (`genre_id`),
+  ADD KEY `fk_book_has_genre_book1_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `book_price`
+--
+ALTER TABLE `book_price`
+  ADD PRIMARY KEY (`id`,`book_id`),
+  ADD KEY `fk_book_price_book1_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `carts`
+--
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`user_id`,`book_id`),
+  ADD KEY `fk_cart_users1_idx` (`user_id`),
+  ADD KEY `fk_cart_book1_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `coupons`
+--
+ALTER TABLE `coupons`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `genres`
+--
+ALTER TABLE `genres`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Chỉ mục cho bảng `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Chỉ mục cho bảng `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bill_users1_idx` (`user_id`);
+
+--
+-- Chỉ mục cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bill_detail_bill1_idx` (`order_id`),
+  ADD KEY `fk_bill_detail_book1_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Chỉ mục cho bảng `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `rating`
+--
+ALTER TABLE `rating`
+  ADD PRIMARY KEY (`user_id`,`book_id`),
+  ADD KEY `fk_book_has_users_users1_idx` (`user_id`),
+  ADD KEY `fk_book_has_users_book1_idx` (`book_id`);
+
+--
+-- Chỉ mục cho bảng `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Chỉ mục cho bảng `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
+
+--
+-- Chỉ mục cho bảng `sliders`
+--
+ALTER TABLE `sliders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `user_has_coupons`
+--
+ALTER TABLE `user_has_coupons`
+  ADD PRIMARY KEY (`user_id`,`coupon_id`),
+  ADD KEY `coupon_id` (`coupon_id`);
+
+--
+-- Chỉ mục cho bảng `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`user_id`,`book_id`),
+  ADD KEY `fk_wishlist_book1_idx` (`book_id`),
+  ADD KEY `fk_wishlist_users1_idx` (`user_id`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `authors`
+--
+ALTER TABLE `authors`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+
+--
+-- AUTO_INCREMENT cho bảng `books`
+--
+ALTER TABLE `books`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `book_price`
+--
+ALTER TABLE `book_price`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `coupons`
+--
+ALTER TABLE `coupons`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT cho bảng `genres`
+--
+ALTER TABLE `genres`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT cho bảng `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT cho bảng `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT cho bảng `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT cho bảng `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `book_has_authors`
+--
+ALTER TABLE `book_has_authors`
+  ADD CONSTRAINT `fk_book_has_author_author1` FOREIGN KEY (`author_id`) REFERENCES `authors` (`id`),
+  ADD CONSTRAINT `fk_book_has_author_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
+
+--
+-- Các ràng buộc cho bảng `book_has_genres`
+--
+ALTER TABLE `book_has_genres`
+  ADD CONSTRAINT `fk_book_has_genre_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `fk_book_has_genre_genre1` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`);
+
+--
+-- Các ràng buộc cho bảng `book_price`
+--
+ALTER TABLE `book_price`
+  ADD CONSTRAINT `fk_book_price_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
+
+--
+-- Các ràng buộc cho bảng `carts`
+--
+ALTER TABLE `carts`
+  ADD CONSTRAINT `fk_cart_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `fk_cart_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Các ràng buộc cho bảng `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `fk_bill_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Các ràng buộc cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD CONSTRAINT `fk_bill_detail_bill1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `fk_bill_detail_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`);
+
+--
+-- Các ràng buộc cho bảng `rating`
+--
+ALTER TABLE `rating`
+  ADD CONSTRAINT `fk_book_has_users_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `fk_book_has_users_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Các ràng buộc cho bảng `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `user_has_coupons`
+--
+ALTER TABLE `user_has_coupons`
+  ADD CONSTRAINT `user_has_coupons_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `user_has_coupons_ibfk_2` FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Các ràng buộc cho bảng `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `fk_wishlist_book1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `fk_wishlist_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

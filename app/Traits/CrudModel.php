@@ -26,8 +26,17 @@ trait CrudModel
 
         $this->model()::create($data);
 
-        $this->addAuthor($request);
-        $this->addGenre($request);
+        if ($request->has('author_id')) {
+            $this->addAuthor($request);
+        }
+
+        if ($request->has('genre_id')) {
+            $this->addGenre($request);
+        }
+
+        if ($request->has('book_price')) {
+            $this->addBookPrice($request);
+        }
 
         return view($this->indexView())->with('toast', ['status' => 'success', 'message' => 'Created Successfully!']);
     }
@@ -37,6 +46,10 @@ trait CrudModel
         $data = $this->model()::findOrFail($id);
 
         $updateData = $this->updateImage($request, $data);
+
+        if ($request->has('book_price')) {
+            $this->handleBookPriceUpdate($request, $id);
+        }
 
         $data->update($updateData);
 

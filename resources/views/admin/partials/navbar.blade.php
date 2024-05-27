@@ -54,6 +54,7 @@
 <div id="mySidenav" class="sidenav">
     <a href="{{route('admin.dashboard')}}"><i class="ti-bar-chart"></i> Dashboard</a>
     <a href="{{route('admin.order.index')}}"><i class="ti-shopping-cart"></i> Orders</a>
+    <a href="{{route('admin.coupon.index')}}"><i class="ti-stats-down"></i> Coupons</a>
     <a href="{{route('admin.book.index')}}"><i class="ti-book"></i> Books</a>
     <a href="{{route('admin.news.index')}}"><i class="ti-file"></i> News</a>
     <a href="{{route('admin.author.index')}}"><i class="ti-marker-alt"></i> Authors</a>
@@ -62,15 +63,6 @@
     <a href="{{route('admin.role.index')}}"><i class="ti-notepad"></i> Roles</a>
     <a href="{{route('admin.slider.index')}}"><i class="ti-hand-drag"></i> Sliders</a>
     <a href="{{route('admin.satistics.index')}}"><i class="ti-stats-up"></i> Satistics</a>
-    <a href="#">Contact</a>
-    <a class="dropdown-btn">Drop
-        <i class="ti-angle-down" style="font-size: 0.6rem;"></i>
-    </a>
-    <div class="dropdown-container">
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-    </div>
 </div>
 
 <script>
