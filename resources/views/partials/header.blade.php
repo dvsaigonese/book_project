@@ -54,12 +54,6 @@
                     </div>
                     <!--/main-menu -->
                 </nav>
-                <div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-end">
-                    <a style="color: white" href="{{ route('order.index') }}"><strong class="d-flex "><i class="ti-shopping-cart text-center p-1"
-                                                                                         style="font-size: 2rem"></i>
-                            <div class="text-center fw-bold">TRACK <br> YOUR ORDER</div>
-                        </strong></a>
-                </div>
             </div>
             <!-- /row -->
         </div>
@@ -133,18 +127,13 @@
 
                                     <ul>
                                         @auth()
-                                            @if(Auth::user()->position_id == 1)
-                                                <li>
-                                                    <a href="{{ route('admin.dashboard') }}"><i
-                                                            class="ti-dashboard"></i>Admin
-                                                        Dashboard</a>
-                                                </li>
-                                            @endif
                                             <li>
-                                                <a href="track-order.html"><i class="ti-truck"></i>Track your Order</a>
+                                                <a href="{{ route('admin.dashboard') }}"><i
+                                                        class="ti-dashboard"></i>Admin
+                                                    Dashboard</a>
                                             </li>
                                             <li>
-                                                <a href="account.html"><i class="ti-package"></i>My Orders</a>
+                                                <a href="{{ route('order.index') }}"><i class="ti-package"></i>My Orders</a>
                                             </li>
                                             <li>
                                                 <a href="{{ route('profile.edit') }}"><i class="ti-user"></i>My Profile</a>

@@ -44,12 +44,15 @@
                                             <small>{{ $item->created_at }}</small>
                                             <h2><a href="{{ route('news.show', $item->slug) }}">{{ $item->title }}</a>
                                             </h2>
+                                            {{ $item->description }}
                                             <ul>
                                                 <li>
                                                     <i class="ti-user"></i>
                                                     {{ $item->author }}
                                                 </li>
-                                                <li></li>
+                                                <li>
+
+                                                </li>
                                             </ul>
                                         </div>
                                     </article>

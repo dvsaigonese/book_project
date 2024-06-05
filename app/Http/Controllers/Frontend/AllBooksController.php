@@ -16,7 +16,8 @@ class AllBooksController extends Controller
         $q = Book::query();
         $q->leftJoin('book_price', 'books.id', '=', 'book_price.book_id')
             ->where('books.status', '=', 1)
-            ->where('book_price.status', '=', 1);
+            ->where('book_price.status', '=', 1)
+            ->orderByDesc('books.created_at');
         $books = $q;
         $books = $books->paginate(12);
         $maxPrice = $this->getMaxPrice($q);
@@ -41,6 +42,7 @@ class AllBooksController extends Controller
             ->where('books.name', 'like', '%' . $que . '%')
             ->where('books.status', '=', 1)
             ->where('book_price.status', '=', 1)
+            ->orderByDesc('books.created_at')
             ->select(
                 'books.*',
                 'book_price.book_price as book_price');
@@ -66,6 +68,7 @@ class AllBooksController extends Controller
             ->where('genres.slug', '=', $genre_slug)
             ->where('books.status', '=', 1)
             ->where('book_price.status', '=', 1)
+            ->orderByDesc('books.created_at')
             ->select(
                 'books.*',
                 'book_price.book_price as book_price');
@@ -90,6 +93,7 @@ class AllBooksController extends Controller
             ->where('authors.slug', '=', $author_slug)
             ->where('books.status', '=', 1)
             ->where('book_price.status', '=', 1)
+            ->orderByDesc('books.created_at')
             ->select(
                 'books.*',
                 'book_price.book_price as book_price');

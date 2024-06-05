@@ -10,7 +10,7 @@
             <div class="mb-3">
                 <label>Title</label>
                 <input name="title" type="text" class="form-control" id="book-name" placeholder="Name"
-                       required>
+                       >
             </div>
             <div class="mb-3">
                 <label for="book-image">Image</label>
@@ -20,7 +20,7 @@
                 <label>Description</label>
                 <textarea name="description" class="form-control" id="book-description"
                           placeholder="Description"
-                          required></textarea>
+                          ></textarea>
             </div>
             <div class="mb-3">
                 <label for="book-status">Status</label>

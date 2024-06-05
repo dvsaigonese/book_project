@@ -12,6 +12,7 @@
             <div class="owl-carousel owl-theme">
                 @foreach($sliders as $slider)
                     <div class="owl-slide cover" style="background-image: url({{asset($slider->image)}});">
+                        @if(isset($slider->title) && isset($slider->description))
                         <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
                             <div class="container">
                                 <div class="row justify-content-center justify-content-md-end">
@@ -30,6 +31,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -112,8 +114,7 @@
                                 <li>{{ $item->created_at }}</li>
                             </ul>
                             <h4>{{ $item->title }}</h4>
-                            <p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse
-                                ullum vidisse....</p>
+                            <p>{{ $item->description }}</p>
                         </a>
                     </div>
                 @endforeach
