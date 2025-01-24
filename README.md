@@ -16,7 +16,8 @@ _This requirement is critical to the project's success. The project cannot proce
 - **Shopping Cart**: Add, edit, and remove books from the cart, dynamic cart total calculation.
 - **Order Management**:
   - Customers can place orders and provide delivery details.
-  - View order history and track order status.
+  - View order history
+  - Track order and delivery status with GiaoHangNhanh API.
 - **Checkout and Payment**: Integrated with a payment gateway (VNPAY) or COD.
 - **Discounts and Coupons**: Apply discounts during checkout.
 - **Blog Section**:
